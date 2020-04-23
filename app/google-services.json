@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1029394547830",
+    "firebase_url": "https://pytapplication.firebaseio.com",
+    "project_id": "pytapplication",
+    "storage_bucket": "pytapplication.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029394547830:android:e296d1746aabfa67018b57",
+        "android_client_info": {
+          "package_name": "com.example.pytapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1029394547830-hkbnisl9l90uh5n51cj60nlfo9raa5p3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pytapplication",
+            "certificate_hash": "08248acfaba9c386287530de63fb1c989c541b82"
+          }
+        },
+        {
+          "client_id": "1029394547830-ooca68q03atd2le43tr8i6tcqe7gk013.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALBbfecn_bYtOYQs-ZomJdSsQhfPBW4fc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1029394547830-ooca68q03atd2le43tr8i6tcqe7gk013.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
