@@ -5,12 +5,14 @@ import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pytapplication.models.Post
+import kotlinx.android.synthetic.main.item_post.view.*
 
 class Postadapter(val context: Context,val posts: List<Post>) :
     RecyclerView.Adapter<Postadapter.ViewHolder>() {
@@ -37,12 +39,14 @@ class Postadapter(val context: Context,val posts: List<Post>) :
             val textViewName = itemView.findViewById<TextView>(R.id.postArtistname)
             val textViewTime = itemView.findViewById<TextView>(R.id.postTime)
             var PostImage = itemView.findViewById<ImageView>(R.id.postImage)
+            val genreTextView = itemView.findViewById<TextView>(R.id.genre)
 
         //function to bind a post
         fun bind(post: Post){
             textViewProfilName.text = post.user?.username
             textViewTrack.text = post.trackname
             textViewName.text = post.artistname
+            genreTextView.text = post.genre
             Glide.with(context).load(post.imageuUrl).into(PostImage)
             textViewTime.text = DateUtils.getRelativeTimeSpanString(post.creationTimems)
         }

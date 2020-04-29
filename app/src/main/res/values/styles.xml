@@ -1,11 +1,26 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+    <!-- Color/size for my Headline -->
+    <style name ="TextAppearance.AppCompat.Widget.ActionBar.Title" parent="@android:style/TextAppearance">
+                <item name="android:textSize">30dp</item>
+                <item name="android:textColor">@color/title_color</item>
+                <item name="android:fontFamily">monospace</item>
+                <item name="android:textStyle">bold</item>
+    </style>
+
+
+
+    <style name="AppToolbar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:itemTextAppearance">@android:color/primary_text_dark</item>
+    </style>
+
 
 </resources>

@@ -84,7 +84,7 @@ open class PostsActivity : AppCompatActivity() {
 
     }
 
-    //referns fo my menu
+    //my top menu(profile)
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_posts, menu)
         return super.onCreateOptionsMenu(menu)

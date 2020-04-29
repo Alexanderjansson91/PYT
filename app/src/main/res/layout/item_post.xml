@@ -13,66 +13,88 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="0dp"
+        android:layout_width="393dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent" />
-
-    <TextView
-        android:id="@+id/postUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="41dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/postArtistname"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/postArtistname"
-        app:layout_constraintTop_toTopOf="@+id/postArtistname" />
+        tools:layout_editor_absoluteY="80dp" />
 
     <TextView
         android:id="@+id/postTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="38dp"
+        android:layout_width="171dp"
+        android:layout_height="19dp"
+        android:layout_marginBottom="7dp"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/postTrackname"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/postTrackname" />
+        android:textColor="#027171"
+        android:textSize="8sp"
+        app:layout_constraintBottom_toTopOf="@+id/postTrackname"
+        app:layout_constraintStart_toStartOf="@+id/postTrackname" />
 
     <TextView
         android:id="@+id/postArtistname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="97dp"
+        android:layout_width="172dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="5dp"
         android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/postUsername"
-        app:layout_constraintStart_toEndOf="@+id/postImage"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="#027171"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/postTrackname" />
 
     <TextView
         android:id="@+id/postTrackname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="37dp"
-        android:layout_marginBottom="46dp"
+        android:layout_width="172dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginBottom="5dp"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="#027171"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/postArtistname"
         app:layout_constraintStart_toEndOf="@+id/postImage" />
 
     <ImageView
         android:id="@+id/postImage"
-        android:layout_width="0dp"
+        android:layout_width="87dp"
         android:layout_height="80dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="37dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/postArtistname"
+        android:layout_marginStart="5dp"
+        android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_launcher_background" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="#FFFFFF"
+        android:tint="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_media_play" />
+
+    <TextView
+        android:id="@+id/postUsername"
+        android:layout_width="85dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:text="TextView"
+        android:textColor="#027171"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/genre"
+        android:layout_width="84dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="5dp"
+        android:text="TextView"
+        android:textColor="#027171"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postUsername" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

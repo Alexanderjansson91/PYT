@@ -6,10 +6,8 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import com.example.pytapplication.models.Post
 import com.example.pytapplication.models.User
 import com.google.firebase.auth.FirebaseAuth
@@ -20,7 +18,8 @@ import kotlinx.android.synthetic.main.activity_create_post.*
 
 private const val TAG = "CreatePostActivity"
 private const val PICK_PHOTO_CODE = 1337
-private var photoURI: Uri? = null
+private const val PICK_AUDIO_CODE = 1336
+private var URI: Uri? = null
 private var signedInUser: User? = null
 private lateinit var firestoreDB: FirebaseFirestore
 private lateinit var storageRef: StorageReference
@@ -30,12 +29,13 @@ private const val EXTRA_USERNAME = "EXTRA_USERNAME"
 
 class CreatePostActivity : AppCompatActivity() {
 
-
+    lateinit var option : Spinner
+    lateinit var genreResult : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_post)
-
+        spinner ()
 
         storageRef = FirebaseStorage.getInstance().reference
         firestoreDB = FirebaseFirestore.getInstance()
@@ -51,9 +51,10 @@ class CreatePostActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.i(TAG, "Failure fetching signed User", exception)
             }
-        val imageButton = findViewById<Button>(R.id.imagePost)
 
-        //Button to set cover to you post
+
+        //Button to set cover to your post
+        val imageButton = findViewById<Button>(R.id.imagePost)
         imageButton.setOnClickListener {
             Log.i(TAG, "Open up image picker on device")
             var imagePickerIntent = Intent(Intent.ACTION_GET_CONTENT)
@@ -62,19 +63,34 @@ class CreatePostActivity : AppCompatActivity() {
                 startActivityForResult(imagePickerIntent, PICK_PHOTO_CODE)
             }
         }
-        //button how to upload the post and receive handleSubmitButtonClick ()
+
+        //Button to set audiofile to yout post
+        val soundbtn = findViewById<Button>(R.id.soundfile)
+        soundbtn.setOnClickListener {
+            Log.i(TAG, "Open up audio picker on device")
+            var soundPickerIntent = Intent(Intent.ACTION_GET_CONTENT)
+            soundPickerIntent.type = "Audio/*"
+            if (soundPickerIntent.resolveActivity(packageManager) != null){
+                startActivityForResult(soundPickerIntent, PICK_AUDIO_CODE)
+            }
+        }
+
+
+        //button how upload the post and receive handleSubmitButtonClick ()
         val uploadPost = findViewById<Button>(R.id.uploadPostBtn)
         uploadPost.setOnClickListener {
             handleSubmitButtonClick ()
         }
     }
 
-    // Funtions how handlde the submit
+    //Funtions how handlde the submit
     private fun handleSubmitButtonClick(){
+
         var textViewNameArtist = findViewById<TextView>(R.id.nameArtist)
         var textViewNameTrack = findViewById<TextView>(R.id.nameTrack)
+        genreResult = findViewById(R.id.spinnerResult)
 
-        if (photoURI == null) {
+        if (URI == null) {
             Toast.makeText(this, "No photo is selected", Toast.LENGTH_SHORT).show()
             return
         }
@@ -87,27 +103,38 @@ class CreatePostActivity : AppCompatActivity() {
                     return
         }
 
-        //upload photo To firebase storage
+        //upload photo/audio To firebase storage
         uploadPostBtn.isEnabled = false
-        val photoUploadUri = photoURI as Uri
+
+        val photoUploadUri = URI as Uri
         val photoreference = storageRef.child("images/${System.currentTimeMillis()}-photo.jpg")
         photoreference.putFile(photoUploadUri)
             .continueWithTask { photoUploadTask ->
                 Log.i(TAG,"upload bytes: ${ photoUploadTask.result?.bytesTransferred}")
-                //retrieve image URL
                 photoreference.downloadUrl
-            //Create a post object o posts collection
-            }.continueWithTask { downloadUrlkTask ->
+            }
+
+        val audioUploadUri = URI as Uri
+        val Audioreference = storageRef.child("audios/${System.currentTimeMillis()}-audio.wav")
+        Audioreference.putFile(audioUploadUri)
+            .continueWithTask {audioUploadTask ->
+                Log.i(TAG,"upload bytes: ${audioUploadTask.result?.bytesTransferred}")
+                Audioreference.downloadUrl
+            }
+            //Create a post object
+            .continueWithTask { downloadUrlkTask ->
                 val post = Post(
                 textViewNameArtist.text.toString(),
                     textViewNameTrack.text.toString(),
                 downloadUrlkTask.result.toString(),
                 System.currentTimeMillis(),
-                    signedInUser
+                    signedInUser,
+                    downloadUrlkTask.result.toString(),
+                    genreResult.text.toString()
                     )
                 firestoreDB.collection("posts").add(post)
 
-            //Complete button how give the user a result and Intent to ProfileActivity
+            //Completele upload how give the user a result and Intent to ProfileActivity
             }.addOnCompleteListener { postCreationTask ->
                 uploadPostBtn.isEnabled = true
             if (!postCreationTask.isSuccessful){
@@ -122,19 +149,45 @@ class CreatePostActivity : AppCompatActivity() {
                 startActivity(ProfileIntent)
                 finish()
             }
+    }
+
+    fun spinner (){
+
+        option = findViewById(R.id.genreSpinner)
+        genreResult = findViewById(R.id.spinnerResult)
+        val options = arrayOf("Pop","Rock","trap","Hiphop","rap","house","Electronic")
+        option.adapter = ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, options)
+
+
+        option.onItemSelectedListener = object  :AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                    genreResult.text = "Please selec an genre"
+            }
+
+            override fun onItemSelected( parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                genreResult.text = options.get(position)
+            }
+        }
 
     }
 
     //Notify when user have selected a Image
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        val uriSong = findViewById<TextView>(R.id.uriSong)
+        if (resultCode == Activity.RESULT_OK){
         if (requestCode == PICK_PHOTO_CODE){
-            if (resultCode == Activity.RESULT_OK){
-                photoURI = data?.data
-                imageView.setImageURI(photoURI)
-                Log.i(TAG, "photoUri $photoURI")
-            }else {
-                Toast.makeText(this,"Image picker action cancelled", Toast.LENGTH_SHORT).show()
+            URI = data?.data
+                imageView.setImageURI(URI)
+                Log.i(TAG, "photoUri $URI")
+
+           } else if (requestCode == PICK_AUDIO_CODE){
+            URI = data?.data
+                uriSong.text = URI.toString()
+                Log.i(TAG, "VideoUri $URI")
+             }
+            else {
+                Toast.makeText(this,"file picker action cancelled", Toast.LENGTH_SHORT).show()
             }
         }
     }

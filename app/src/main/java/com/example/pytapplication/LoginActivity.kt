@@ -1,11 +1,14 @@
 package com.example.pytapplication
 
 import android.content.Intent
+import android.graphics.Color
 import android.nfc.Tag
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -49,6 +52,11 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, PostsActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_login, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
 
