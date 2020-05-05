@@ -25,8 +25,6 @@ private lateinit var firestoreDB: FirebaseFirestore
 private lateinit var storageRef: StorageReference
 private const val EXTRA_USERNAME = "EXTRA_USERNAME"
 
-
-
 class CreatePostActivity : AppCompatActivity() {
 
     lateinit var option : Spinner
@@ -36,7 +34,6 @@ class CreatePostActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_post)
         spinner ()
-
         storageRef = FirebaseStorage.getInstance().reference
         firestoreDB = FirebaseFirestore.getInstance()
 
@@ -69,7 +66,7 @@ class CreatePostActivity : AppCompatActivity() {
         soundbtn.setOnClickListener {
             Log.i(TAG, "Open up audio picker on device")
             var soundPickerIntent = Intent(Intent.ACTION_GET_CONTENT)
-            soundPickerIntent.type = "Audio/*"
+            soundPickerIntent.type = "audio/*"
             if (soundPickerIntent.resolveActivity(packageManager) != null){
                 startActivityForResult(soundPickerIntent, PICK_AUDIO_CODE)
             }
@@ -121,13 +118,13 @@ class CreatePostActivity : AppCompatActivity() {
                 Log.i(TAG,"upload bytes: ${audioUploadTask.result?.bytesTransferred}")
                 Audioreference.downloadUrl
             }
-            //Create a post object
+            //Create a post object and add data to my collection "posts" on firebase
             .continueWithTask { downloadUrlkTask ->
                 val post = Post(
-                textViewNameArtist.text.toString(),
+                    textViewNameArtist.text.toString(),
                     textViewNameTrack.text.toString(),
-                downloadUrlkTask.result.toString(),
-                System.currentTimeMillis(),
+                    downloadUrlkTask.result.toString(),
+                    System.currentTimeMillis(),
                     signedInUser,
                     downloadUrlkTask.result.toString(),
                     genreResult.text.toString()
@@ -151,25 +148,6 @@ class CreatePostActivity : AppCompatActivity() {
             }
     }
 
-    fun spinner (){
-
-        option = findViewById(R.id.genreSpinner)
-        genreResult = findViewById(R.id.spinnerResult)
-        val options = arrayOf("Pop","Rock","trap","Hiphop","rap","house","Electronic")
-        option.adapter = ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, options)
-
-
-        option.onItemSelectedListener = object  :AdapterView.OnItemSelectedListener{
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                    genreResult.text = "Please selec an genre"
-            }
-
-            override fun onItemSelected( parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                genreResult.text = options.get(position)
-            }
-        }
-
-    }
 
     //Notify when user have selected a Image
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -190,5 +168,25 @@ class CreatePostActivity : AppCompatActivity() {
                 Toast.makeText(this,"file picker action cancelled", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    fun spinner (){
+
+        option = findViewById(R.id.genreSpinner)
+        genreResult = findViewById(R.id.spinnerResult)
+        val options = arrayOf("Pop","Rock","trap","Hiphop","rap","house","Electronic")
+        option.adapter = ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, options)
+
+
+        option.onItemSelectedListener = object  :AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                genreResult.text = "Please selec an genre"
+            }
+
+            override fun onItemSelected( parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                genreResult.text = options.get(position)
+            }
+        }
+
     }
 }

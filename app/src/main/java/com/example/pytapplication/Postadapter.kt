@@ -12,6 +12,7 @@ import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pytapplication.models.Post
+import kotlinx.android.synthetic.main.activity_login.view.*
 import kotlinx.android.synthetic.main.item_post.view.*
 
 class Postadapter(val context: Context,val posts: List<Post>) :
@@ -40,6 +41,7 @@ class Postadapter(val context: Context,val posts: List<Post>) :
             val textViewTime = itemView.findViewById<TextView>(R.id.postTime)
             var PostImage = itemView.findViewById<ImageView>(R.id.postImage)
             val genreTextView = itemView.findViewById<TextView>(R.id.genre)
+            //val playMusicButton = itemView.findViewById<ImageButton>(R.id.play_Button)
 
         //function to bind a post
         fun bind(post: Post){
@@ -49,7 +51,9 @@ class Postadapter(val context: Context,val posts: List<Post>) :
             genreTextView.text = post.genre
             Glide.with(context).load(post.imageuUrl).into(PostImage)
             textViewTime.text = DateUtils.getRelativeTimeSpanString(post.creationTimems)
+            //Glide.with(context).load(post.audioUrl).into(playMusicButton)
         }
+
 }
 
 }

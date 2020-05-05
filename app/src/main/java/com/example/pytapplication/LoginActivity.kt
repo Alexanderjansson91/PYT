@@ -7,14 +7,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AlertDialog
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
 
     val TAG = "MyMessage"
+    lateinit var auth : FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +26,10 @@ class LoginActivity : AppCompatActivity() {
         val auth = FirebaseAuth.getInstance()
         if (auth.currentUser != null) {
             getPostActivity()
+        }
+        val newUserButton = findViewById<Button>(R.id.new_Profil)
+        newUserButton.setOnClickListener {
+           goToRegisterPage()
         }
         //Log in Button, return Toast if email/password are empty
         btnLogin.setOnClickListener {
@@ -32,6 +40,7 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "email/password cannot be empty", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
 
             //Firebase authentication check
             auth.signInWithEmailAndPassword(email,password).addOnCompleteListener { task ->
@@ -46,6 +55,13 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
+
+    //go to register page
+    fun goToRegisterPage (){
+        val intent = Intent(this, createUserActivity::class.java)
+        startActivity(intent)
+    }
+
     //intent to PostsActivity
     private fun getPostActivity() {
        Log.i(TAG, "goToPostActivity")
@@ -58,6 +74,4 @@ class LoginActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_login, menu)
         return super.onCreateOptionsMenu(menu)
     }
-
-
 }

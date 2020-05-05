@@ -2,12 +2,15 @@ package com.example.pytapplication
 
 import android.content.AbstractThreadedSyncAdapter
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pytapplication.models.Post
@@ -17,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_posts.*
+import kotlinx.android.synthetic.main.item_post.*
 
 private const val TAG = "message"
 private const val EXTRA_USERNAME = "EXTRA_USERNAME"
@@ -25,15 +29,27 @@ open class PostsActivity : AppCompatActivity() {
     private var signedInUser: User? = null
     private lateinit var firestoreDB : FirebaseFirestore
     private lateinit var posts : MutableList<Post>
+    private lateinit var postSong : Post
     private lateinit var adapter: Postadapter
+    private lateinit var mp : MediaPlayer
+    private var totalTime : Int =0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_posts)
+
+        //postSong = Post()
+        //mp = MediaPlayer.create(this, postSong.audioUrl.toInt())
+
+        mp = MediaPlayer.create(this,R.raw.skickabilder)
+        mp.isLooping= true
+        mp.setVolume(0.5f,0.5f)
+        totalTime = mp.duration
+
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPosts)
         posts = mutableListOf()
         adapter = Postadapter(this, posts)
-        recyclerView.adapter =adapter
+        recyclerView.adapter = adapter
         recyclerView.layoutManager =  LinearLayoutManager(this)
         firestoreDB = FirebaseFirestore.getInstance()
 
@@ -64,9 +80,9 @@ open class PostsActivity : AppCompatActivity() {
         //query for all my post
         postsReference.addSnapshotListener { snapshot, exception ->
             if (exception != null || snapshot == null) {
-                    Log.e(TAG,"Exception when querying posts", exception)
+                Log.e(TAG,"Exception when querying posts", exception)
                 return@addSnapshotListener
-                }
+            }
             val postList = snapshot.toObjects(Post::class.java)
             posts.clear()
             posts.addAll(postList)
@@ -80,6 +96,7 @@ open class PostsActivity : AppCompatActivity() {
         addBtn.setOnClickListener {
             val intent = Intent(this, CreatePostActivity::class.java)
             startActivity(intent)
+            println(posts)
         }
 
     }
@@ -101,5 +118,16 @@ open class PostsActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    fun playBtnClick(v: View){
 
+        if (mp.isPlaying){
+            //Stop
+            mp.pause()
+            play_Button.setBackgroundResource(R.drawable.play)
+        }else{
+            //start
+            mp.start()
+            play_Button.setBackgroundResource(R.drawable.stop)
+        }
+    }
 }
