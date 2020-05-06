@@ -1,6 +1,5 @@
 package com.example.pytapplication
 
-import android.content.AbstractThreadedSyncAdapter
 import android.content.Intent
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
@@ -9,8 +8,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pytapplication.models.Post
@@ -19,7 +16,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import kotlinx.android.synthetic.main.activity_posts.*
 import kotlinx.android.synthetic.main.item_post.*
 
 private const val TAG = "message"
@@ -118,16 +114,16 @@ open class PostsActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    fun playBtnClick(v: View){
+    fun playBtnClick(v:View) {
 
         if (mp.isPlaying){
             //Stop
             mp.pause()
-            play_Button.setBackgroundResource(R.drawable.play)
+            //play_Button.setBackgroundResource(R.drawable.play)
         }else{
             //start
             mp.start()
-            play_Button.setBackgroundResource(R.drawable.stop)
+            //play_Button.setBackgroundResource(R.drawable.stop)
         }
     }
 }

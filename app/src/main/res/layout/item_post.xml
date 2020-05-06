@@ -9,11 +9,10 @@
     android:id="@+id/item_post"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_margin="0dp"
     android:background="#FFFFFF"
     android:paddingTop="5dp"
     android:paddingBottom="5dp">
-
 
 
     <androidx.cardview.widget.CardView
@@ -24,9 +23,7 @@
         app:cardCornerRadius="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="80dp"
-        />
-
+        tools:layout_editor_absoluteY="80dp" />
 
 
     <TextView
@@ -79,8 +76,8 @@
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
         android:backgroundTint="#FFFFFF"
-        android:tint="#000000"
         android:onClick="playBtnClick"
+        android:tint="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_media_play" />

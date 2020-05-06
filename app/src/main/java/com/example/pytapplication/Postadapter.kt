@@ -1,19 +1,21 @@
 package com.example.pytapplication
 
 import android.content.Context
+import android.graphics.Color
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.view.menu.ActionMenuItemView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pytapplication.models.Post
-import kotlinx.android.synthetic.main.activity_login.view.*
-import kotlinx.android.synthetic.main.item_post.view.*
+
+
+//lateinit var activity: Activity
+var selectedPosition: Int = -1
 
 class Postadapter(val context: Context,val posts: List<Post>) :
     RecyclerView.Adapter<Postadapter.ViewHolder>() {
@@ -22,7 +24,12 @@ class Postadapter(val context: Context,val posts: List<Post>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_post, parent, false)
         return ViewHolder(view)
+
+
+
     }
+
+
 
     //Size of recyclerView
     override fun getItemCount() = posts.size
@@ -30,6 +37,20 @@ class Postadapter(val context: Context,val posts: List<Post>) :
     //Bind post to my recyclerView
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(posts[position])
+
+
+        if (selectedPosition == position) {
+            holder.itemView.setBackgroundColor(Color.parseColor("#52027171"))
+        }else {
+            holder.itemView.setBackgroundColor(Color.parseColor("#ffffff"))
+        }
+
+        holder.itemView.setOnClickListener {
+            selectedPosition = position
+            notifyDataSetChanged()
+        }
+
+
     }
 
     //inner class for my viewhodler
@@ -54,6 +75,13 @@ class Postadapter(val context: Context,val posts: List<Post>) :
             //Glide.with(context).load(post.audioUrl).into(playMusicButton)
         }
 
-}
-
+        init {
+            itemView.setOnClickListener {
+                val position: Int = adapterPosition
+                Toast.makeText(itemView.context,"You play # ${position + 1}", Toast.LENGTH_SHORT).show()
+                    //activity = Activity()
+                //(activity as PostsActivity).playBtnClick(itemView)
+            }
+        }
+    }
 }
