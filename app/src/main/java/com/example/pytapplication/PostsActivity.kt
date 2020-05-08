@@ -1,13 +1,18 @@
 package com.example.pytapplication
 
+import android.app.Activity
 import android.content.Intent
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pytapplication.models.Post
@@ -37,18 +42,16 @@ open class PostsActivity : AppCompatActivity() {
         //postSong = Post()
         //mp = MediaPlayer.create(this, postSong.audioUrl.toInt())
 
-        mp = MediaPlayer.create(this,R.raw.skickabilder)
-        mp.isLooping= true
-        mp.setVolume(0.5f,0.5f)
-        totalTime = mp.duration
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPosts)
+        recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+
         posts = mutableListOf()
         adapter = Postadapter(this, posts)
         recyclerView.adapter = adapter
         recyclerView.layoutManager =  LinearLayoutManager(this)
         firestoreDB = FirebaseFirestore.getInstance()
-
+        playBtnClick()
         //Get Current User
         firestoreDB.collection("users")
             .document(FirebaseAuth.getInstance().currentUser?.uid as String)
@@ -95,6 +98,8 @@ open class PostsActivity : AppCompatActivity() {
             println(posts)
         }
 
+
+
     }
 
     //my top menu(profile)
@@ -113,17 +118,32 @@ open class PostsActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
+        fun playBtnClick() {
+            val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPosts)
 
-    fun playBtnClick(v:View) {
+        mp = MediaPlayer.create(this,R.raw.skickabilder)
+        mp.isLooping= true
+        mp.setVolume(0.5f,0.5f)
+        totalTime = mp.duration
 
-        if (mp.isPlaying){
-            //Stop
-            mp.pause()
-            //play_Button.setBackgroundResource(R.drawable.play)
-        }else{
-            //start
-            mp.start()
-            //play_Button.setBackgroundResource(R.drawable.stop)
-        }
+            recyclerView.setOnClickListener {
+
+            if (recyclerView.isPressed == mp.isPlaying) {
+                mp.pause()
+            }else{
+                mp.start()
+            }
+            }
+
+
+
+                /*if (mp.isPlaying) {
+                    mp.pause()
+                    //play_Button.setBackgroundResource(R.drawable.play)
+                } else {
+                    mp.start()
+                    //play_Button.setBackgroundResource(R.drawable.stop)
+                }*/
+
     }
 }

@@ -11,6 +11,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="0dp"
     android:background="#FFFFFF"
+    android:foregroundTint="#FFFFFF"
     android:paddingTop="5dp"
     android:paddingBottom="5dp">
 
@@ -28,36 +29,42 @@
 
     <TextView
         android:id="@+id/postTime"
-        android:layout_width="171dp"
-        android:layout_height="19dp"
-        android:layout_marginBottom="7dp"
+        android:layout_width="75dp"
+        android:layout_height="14dp"
+        android:fontFamily="@font/muli"
+        android:foregroundGravity="left|center_horizontal"
         android:text="TextView"
         android:textColor="#027171"
-        android:textSize="8sp"
-        app:layout_constraintBottom_toTopOf="@+id/postTrackname"
-        app:layout_constraintStart_toStartOf="@+id/postTrackname" />
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="@+id/postTrackname"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/postArtistname"
         android:layout_width="172dp"
         android:layout_height="20dp"
-        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/muli"
+        android:foregroundGravity="center_horizontal"
         android:text="TextView"
         android:textColor="#027171"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/postTrackname" />
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/postTrackname"
+        app:layout_constraintTop_toBottomOf="@+id/postTrackname" />
 
     <TextView
         android:id="@+id/postTrackname"
-        android:layout_width="172dp"
-        android:layout_height="21dp"
-        android:layout_marginStart="3dp"
-        android:layout_marginBottom="5dp"
+        android:layout_width="235dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/muli_bold"
+        android:gravity="center_vertical"
         android:text="TextView"
         android:textColor="#027171"
+        android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/postArtistname"
-        app:layout_constraintStart_toEndOf="@+id/postImage" />
+        app:layout_constraintStart_toStartOf="@+id/postImage"
+        app:layout_constraintTop_toBottomOf="@+id/postTime" />
 
     <ImageView
         android:id="@+id/postImage"
@@ -69,40 +76,66 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_launcher_background" />
 
+    <Button
+        android:id="@+id/show_Song_Info"
+        android:layout_width="57dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="5dp"
+        android:backgroundTint="#000000"
+        android:fontFamily="sans-serif-smallcaps"
+        android:foregroundGravity="center"
+        android:text="View"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/postTime" />
+
     <ImageButton
-        android:id="@+id/play_Button"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:id="@+id/imageButton3"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        android:backgroundTint="#FFFFFF"
-        android:onClick="playBtnClick"
-        android:tint="#000000"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:backgroundTint="#00FFFFFF"
+        android:foregroundTint="#FFFFFF"
+        android:scrollbarSize="4dp"
+        android:tint="#00000000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_media_play" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_share" />
+
+
+    <LinearLayout
+        android:id="@+id/expandableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:orientation="vertical"
+        android:visibility="gone">
 
     <TextView
-        android:id="@+id/postUsername"
-        android:layout_width="85dp"
-        android:layout_height="19dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:text="TextView"
-        android:textColor="#027171"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Some more information about the song will be avilible here."
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="18dp"
+        />
+
+
 
     <TextView
-        android:id="@+id/genre"
-        android:layout_width="84dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="5dp"
-        android:text="TextView"
-        android:textColor="#027171"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postUsername" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Post Your Track"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginTop="20dp"
+        />
+
+    </LinearLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

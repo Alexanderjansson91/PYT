@@ -15,6 +15,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_create_post.*
+import kotlinx.android.synthetic.main.activity_create_post.view.*
+import org.w3c.dom.Text
 
 private const val TAG = "CreatePostActivity"
 private const val PICK_PHOTO_CODE = 1337
@@ -81,70 +83,71 @@ class CreatePostActivity : AppCompatActivity() {
     }
 
     //Funtions how handlde the submit
-    private fun handleSubmitButtonClick(){
+    private fun handleSubmitButtonClick() {
 
+        var image = findViewById<ImageView>(R.id.imageView_Post)
         var textViewNameArtist = findViewById<TextView>(R.id.nameArtist)
         var textViewNameTrack = findViewById<TextView>(R.id.nameTrack)
+        var textUri = findViewById<TextView>(R.id.uriSong)
         genreResult = findViewById(R.id.spinnerResult)
 
         if (URI == null) {
             Toast.makeText(this, "No photo is selected", Toast.LENGTH_SHORT).show()
             return
         }
-        if (textViewNameArtist == null){
+        if (textViewNameArtist == null) {
             Toast.makeText(this, "Artist name is not selected", Toast.LENGTH_SHORT).show()
             return
         }
-        if (signedInUser == null){
+        if (signedInUser == null) {
             Toast.makeText(this, "No user", Toast.LENGTH_SHORT).show()
-                    return
+            return
         }
 
         //upload photo/audio To firebase storage
         uploadPostBtn.isEnabled = false
-
         val photoUploadUri = URI as Uri
         val photoreference = storageRef.child("images/${System.currentTimeMillis()}-photo.jpg")
         photoreference.putFile(photoUploadUri)
             .continueWithTask { photoUploadTask ->
-                Log.i(TAG,"upload bytes: ${ photoUploadTask.result?.bytesTransferred}")
+                Log.i(TAG, "upload bytes: ${photoUploadTask.result?.bytesTransferred}")
                 photoreference.downloadUrl
             }
 
-        val audioUploadUri = URI as Uri
-        val Audioreference = storageRef.child("audios/${System.currentTimeMillis()}-audio.wav")
-        Audioreference.putFile(audioUploadUri)
-            .continueWithTask {audioUploadTask ->
-                Log.i(TAG,"upload bytes: ${audioUploadTask.result?.bytesTransferred}")
-                Audioreference.downloadUrl
-            }
-            //Create a post object and add data to my collection "posts" on firebase
-            .continueWithTask { downloadUrlkTask ->
-                val post = Post(
-                    textViewNameArtist.text.toString(),
-                    textViewNameTrack.text.toString(),
-                    downloadUrlkTask.result.toString(),
-                    System.currentTimeMillis(),
-                    signedInUser,
-                    downloadUrlkTask.result.toString(),
-                    genreResult.text.toString()
-                    )
-                firestoreDB.collection("posts").add(post)
-
-            //Completele upload how give the user a result and Intent to ProfileActivity
-            }.addOnCompleteListener { postCreationTask ->
+            .addOnCompleteListener { postCreationTask ->
                 uploadPostBtn.isEnabled = true
-            if (!postCreationTask.isSuccessful){
-                Log.e(TAG,"exception during Firebase operations")
-                Toast.makeText(this,"Failed to save post", Toast.LENGTH_SHORT).show()
-            }
+                if (!postCreationTask.isSuccessful) {
+                    Log.e(TAG, "exception during Firebase operations")
+                    Toast.makeText(this, "Failed to save post", Toast.LENGTH_SHORT).show()
+                }
+                val audioUploadUri = URI as Uri
+                val Audioreference =
+                    storageRef.child("audios/${System.currentTimeMillis()}-audio.wav")
+                Audioreference.putFile(audioUploadUri)
+                    .continueWithTask { audioUploadTask ->
+                        Log.i(TAG, "upload bytes: ${audioUploadTask.result?.bytesTransferred}")
+                        Audioreference.downloadUrl
+                    }
+                    .continueWithTask { file ->
+                        val post = Post(
+                            textViewNameArtist.text.toString(),
+                            textViewNameTrack.text.toString(),
+                            file.result.toString(),
+                            System.currentTimeMillis(),
+                            signedInUser,
+                            file.result.toString(),
+                            genreResult.text.toString()
+                        )
+                        firestoreDB.collection("posts").add(post)
+                    }.addOnCompleteListener {
+                        //image.setImageResource(0)
+                        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
+                        val ProfileIntent = Intent(this, ProfileActivity::class.java)
+                        ProfileIntent.putExtra(EXTRA_USERNAME, signedInUser?.username)
+                        startActivity(ProfileIntent)
+                        finish()
+                    }
                 //textViewNameArtist.text.clear()
-                //ImageView.setImageResource(0)
-                Toast.makeText(this,"Success", Toast.LENGTH_SHORT).show()
-                val ProfileIntent = Intent(this,ProfileActivity::class.java)
-                ProfileIntent.putExtra(EXTRA_USERNAME, signedInUser?.username)
-                startActivity(ProfileIntent)
-                finish()
             }
     }
 
@@ -156,7 +159,7 @@ class CreatePostActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK){
         if (requestCode == PICK_PHOTO_CODE){
             URI = data?.data
-                imageView.setImageURI(URI)
+                imageView_Post.setImageURI(URI)
                 Log.i(TAG, "photoUri $URI")
 
            } else if (requestCode == PICK_AUDIO_CODE){
@@ -190,3 +193,6 @@ class CreatePostActivity : AppCompatActivity() {
 
     }
 }
+
+
+

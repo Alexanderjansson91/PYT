@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/exo</item>
+        <item>@font/exo_bold</item>
+        <item>@font/exo_extralight</item>
+        <item>@font/happy_monkey</item>
+        <item>@font/lekton</item>
+        <item>@font/lekton_bold</item>
+        <item>@font/muli</item>
+        <item>@font/muli_bold</item>
+        <item>@font/yantramanav_bold</item>
+    </array>
+</resources>
