@@ -10,7 +10,7 @@
         android:id="@+id/nameArtist"
         android:layout_width="300dp"
         android:layout_height="39dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:ems="10"
         android:hint="Artistname"
         android:inputType="textPersonName"
@@ -65,23 +65,23 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="90dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imagePost"
         app:srcCompat="@android:drawable/ic_menu_gallery" />
 
     <Button
         android:id="@+id/uploadPostBtn"
-        android:layout_width="186dp"
-        android:layout_height="95dp"
-        android:layout_marginBottom="40dp"
+        android:layout_width="333dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="32dp"
 
+        android:background="@drawable/loginbtn_border"
+        android:backgroundTint="#000000"
         android:text="Upload"
         android:textColor="#FFFFFF"
         android:textSize="36sp"
         android:textStyle="bold"
-        android:background="@drawable/loginbtn_border"
-        android:backgroundTint="#000000"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,9 +89,10 @@
 
     <TextView
         android:id="@+id/uriSong"
-        android:layout_width="193dp"
-        android:layout_height="186dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginStart="60dp"
+        android:layout_marginEnd="30dp"
         android:gravity="center"
         android:text="Empty"
         app:layout_constraintEnd_toEndOf="parent"
@@ -102,7 +103,7 @@
         android:id="@+id/genreSpinner"
         android:layout_width="213dp"
         android:layout_height="31dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_Post" />
@@ -111,11 +112,68 @@
         android:id="@+id/spinnerResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="TextView"
         android:textColor="#027171"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/genreSpinner" />
+
+    <EditText
+        android:id="@+id/instagram_URL"
+        android:layout_width="138dp"
+        android:layout_height="46dp"
+        android:ems="10"
+        android:hint="Your Instagram"
+        android:inputType="textPersonName"
+        android:textColorHint="#027171"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/facebook_URL"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/facebook_URL"
+        app:layout_constraintTop_toTopOf="@+id/facebook_URL" />
+
+    <EditText
+        android:id="@+id/facebook_URL"
+        android:layout_width="138dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="70dp"
+        android:ems="10"
+        android:hint="Your Facebook"
+        android:inputType="textPersonName"
+        android:textColorHint="#027171"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/uploadPostBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spotify_URL" />
+
+    <EditText
+        android:id="@+id/soundcloud_URL"
+        android:layout_width="138dp"
+        android:layout_height="46dp"
+        android:ems="10"
+        android:hint="Your Soundcloud"
+        android:inputType="textPersonName"
+        android:textColorHint="#027171"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/spotify_URL"
+        app:layout_constraintTop_toTopOf="@+id/spotify_URL" />
+
+    <EditText
+        android:id="@+id/spotify_URL"
+        android:layout_width="138dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Your Spotify"
+        android:inputType="textPersonName"
+        android:textColorHint="#027171"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerResult" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

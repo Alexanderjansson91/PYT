@@ -1,17 +1,14 @@
 package com.example.pytapplication
 
-import android.app.Activity
 import android.content.Intent
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.transition.AutoTransition
-import android.transition.TransitionManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +18,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import kotlinx.android.synthetic.main.item_post.*
 
 private const val TAG = "message"
 private const val EXTRA_USERNAME = "EXTRA_USERNAME"
@@ -35,6 +31,7 @@ open class PostsActivity : AppCompatActivity() {
     private lateinit var mp : MediaPlayer
     private var totalTime : Int =0
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_posts)
@@ -42,16 +39,20 @@ open class PostsActivity : AppCompatActivity() {
         //postSong = Post()
         //mp = MediaPlayer.create(this, postSong.audioUrl.toInt())
 
+        mp = MediaPlayer.create(this,R.raw.skickabilder)
+        mp.isLooping= true
+        mp.setVolume(0.5f,0.5f)
+        totalTime = mp.duration
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPosts)
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
-
+        playBtnClick()
         posts = mutableListOf()
         adapter = Postadapter(this, posts)
         recyclerView.adapter = adapter
         recyclerView.layoutManager =  LinearLayoutManager(this)
         firestoreDB = FirebaseFirestore.getInstance()
-        playBtnClick()
+
         //Get Current User
         firestoreDB.collection("users")
             .document(FirebaseAuth.getInstance().currentUser?.uid as String)
@@ -97,9 +98,6 @@ open class PostsActivity : AppCompatActivity() {
             startActivity(intent)
             println(posts)
         }
-
-
-
     }
 
     //my top menu(profile)
@@ -118,32 +116,34 @@ open class PostsActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
-        fun playBtnClick() {
-            val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPosts)
+     fun playBtnClick() {
+         if (mp.isPlaying) {
+             mp.start()
+             Log.e(TAG,"Hejdu")
+         }else{
+             mp.pause()
+         }
 
-        mp = MediaPlayer.create(this,R.raw.skickabilder)
-        mp.isLooping= true
-        mp.setVolume(0.5f,0.5f)
-        totalTime = mp.duration
-
-            recyclerView.setOnClickListener {
-
-            if (recyclerView.isPressed == mp.isPlaying) {
+          /*  if (mp.isPlaying) {
                 mp.pause()
-            }else{
+                recyclerView.setBackgroundResource(R.drawable.play)
+            } else {
                 mp.start()
-            }
-            }
+                recyclerView.setBackgroundResource(R.drawable.stop)
+            }*/
 
+   }
 
+    fun shareSong(){
 
-                /*if (mp.isPlaying) {
-                    mp.pause()
-                    //play_Button.setBackgroundResource(R.drawable.play)
-                } else {
-                    mp.start()
-                    //play_Button.setBackgroundResource(R.drawable.stop)
-                }*/
+            val myIntent = Intent(Intent.ACTION_SEND)
+            myIntent.type = "type/palin"
+            val shareBody = "You are body"
+            val shareSub = "You subject here"
+            myIntent.putExtra(Intent.EXTRA_SUBJECT, shareBody)
+            myIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub)
+            startActivity(Intent.createChooser(myIntent,"share"))
+            println("hej")
 
+        }
     }
-}

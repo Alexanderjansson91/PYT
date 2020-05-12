@@ -52,6 +52,9 @@ class CreatePostActivity : AppCompatActivity() {
             }
 
 
+
+
+
         //Button to set cover to your post
         val imageButton = findViewById<Button>(R.id.imagePost)
         imageButton.setOnClickListener {
@@ -88,8 +91,12 @@ class CreatePostActivity : AppCompatActivity() {
         var image = findViewById<ImageView>(R.id.imageView_Post)
         var textViewNameArtist = findViewById<TextView>(R.id.nameArtist)
         var textViewNameTrack = findViewById<TextView>(R.id.nameTrack)
-        var textUri = findViewById<TextView>(R.id.uriSong)
+        var songUrl = findViewById<TextView>(R.id.uriSong)
         genreResult = findViewById(R.id.spinnerResult)
+        var spotify = findViewById<EditText>(R.id.spotify_URL)
+        var soundcloud = findViewById<EditText>(R.id.soundcloud_URL)
+        var facebook = findViewById<EditText>(R.id.facebook_URL)
+        var instagram = findViewById<EditText>(R.id.instagram_URL)
 
         if (URI == null) {
             Toast.makeText(this, "No photo is selected", Toast.LENGTH_SHORT).show()
@@ -107,13 +114,14 @@ class CreatePostActivity : AppCompatActivity() {
         //upload photo/audio To firebase storage
         uploadPostBtn.isEnabled = false
         val photoUploadUri = URI as Uri
+        var photo : String? = null
         val photoreference = storageRef.child("images/${System.currentTimeMillis()}-photo.jpg")
         photoreference.putFile(photoUploadUri)
             .continueWithTask { photoUploadTask ->
                 Log.i(TAG, "upload bytes: ${photoUploadTask.result?.bytesTransferred}")
+                photo = photoUploadTask.toString()
                 photoreference.downloadUrl
             }
-
             .addOnCompleteListener { postCreationTask ->
                 uploadPostBtn.isEnabled = true
                 if (!postCreationTask.isSuccessful) {
@@ -121,26 +129,30 @@ class CreatePostActivity : AppCompatActivity() {
                     Toast.makeText(this, "Failed to save post", Toast.LENGTH_SHORT).show()
                 }
                 val audioUploadUri = URI as Uri
-                val Audioreference =
-                    storageRef.child("audios/${System.currentTimeMillis()}-audio.wav")
+                val Audioreference = storageRef.child("audios/${System.currentTimeMillis()}-audio.wav")
                 Audioreference.putFile(audioUploadUri)
                     .continueWithTask { audioUploadTask ->
                         Log.i(TAG, "upload bytes: ${audioUploadTask.result?.bytesTransferred}")
                         Audioreference.downloadUrl
                     }
-                    .continueWithTask { file ->
+                    .continueWithTask { file->
                         val post = Post(
                             textViewNameArtist.text.toString(),
                             textViewNameTrack.text.toString(),
-                            file.result.toString(),
+                            photo!!,
                             System.currentTimeMillis(),
                             signedInUser,
                             file.result.toString(),
-                            genreResult.text.toString()
+                            genreResult.text.toString(),
+                            spotify.text.toString(),
+                            instagram.text.toString(),
+                            facebook.text.toString(),
+                            soundcloud.text.toString()
                         )
                         firestoreDB.collection("posts").add(post)
                     }.addOnCompleteListener {
                         //image.setImageResource(0)
+                        //songUrl.setText(0)
                         Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
                         val ProfileIntent = Intent(this, ProfileActivity::class.java)
                         ProfileIntent.putExtra(EXTRA_USERNAME, signedInUser?.username)
@@ -190,7 +202,6 @@ class CreatePostActivity : AppCompatActivity() {
                 genreResult.text = options.get(position)
             }
         }
-
     }
 }
 

@@ -53,7 +53,7 @@
 
     <TextView
         android:id="@+id/postTrackname"
-        android:layout_width="235dp"
+        android:layout_width="171dp"
         android:layout_height="32dp"
         android:layout_marginStart="96dp"
         android:layout_marginTop="5dp"
@@ -91,12 +91,17 @@
         app:layout_constraintTop_toTopOf="@+id/postTime" />
 
     <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:id="@+id/share_Button"
+        android:layout_width="19dp"
+        android:layout_height="20dp"
         android:layout_marginEnd="5dp"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:background="#FFFFFF"
         android:backgroundTint="#00FFFFFF"
         android:foregroundTint="#FFFFFF"
+        android:padding="1dp"
+        android:scaleType="fitCenter"
         android:scrollbarSize="4dp"
         android:tint="#00000000"
         app:layout_constraintEnd_toEndOf="parent"
@@ -112,30 +117,50 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Some more information about the song will be avilible here."
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="18dp"
-        />
+        <TextView
+            android:id="@+id/genre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="18dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <TextView
+            android:id="@+id/postUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="18dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="50dp"
+            android:max="100"
+            android:min="0" />
 
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Post Your Track"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:layout_marginStart="18dp"
-        android:layout_marginEnd="18dp"
-        android:layout_marginTop="20dp"
-        />
+        <ImageButton
+            android:id="@+id/button_Spotify"
+            android:layout_width="51dp"
+            android:layout_height="33dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="#FFFFFF"
+            android:backgroundTint="#00FFFFFF"
+            android:foregroundTint="#FFFFFF"
+            android:padding="1dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/spotify"
+            app:layout_constraintEnd_toStartOf="@+id/share_Button"
+            app:layout_constraintTop_toTopOf="@+id/share_Button" />
 
     </LinearLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
