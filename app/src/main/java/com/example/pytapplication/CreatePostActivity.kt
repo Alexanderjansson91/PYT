@@ -51,10 +51,6 @@ class CreatePostActivity : AppCompatActivity() {
                 Log.i(TAG, "Failure fetching signed User", exception)
             }
 
-
-
-
-
         //Button to set cover to your post
         val imageButton = findViewById<Button>(R.id.imagePost)
         imageButton.setOnClickListener {
@@ -87,7 +83,6 @@ class CreatePostActivity : AppCompatActivity() {
 
     //Funtions how handlde the submit
     private fun handleSubmitButtonClick() {
-
         var image = findViewById<ImageView>(R.id.imageView_Post)
         var textViewNameArtist = findViewById<TextView>(R.id.nameArtist)
         var textViewNameTrack = findViewById<TextView>(R.id.nameTrack)
@@ -97,7 +92,6 @@ class CreatePostActivity : AppCompatActivity() {
         var soundcloud = findViewById<EditText>(R.id.soundcloud_URL)
         var facebook = findViewById<EditText>(R.id.facebook_URL)
         var instagram = findViewById<EditText>(R.id.instagram_URL)
-
         if (URI == null) {
             Toast.makeText(this, "No photo is selected", Toast.LENGTH_SHORT).show()
             return
@@ -110,55 +104,54 @@ class CreatePostActivity : AppCompatActivity() {
             Toast.makeText(this, "No user", Toast.LENGTH_SHORT).show()
             return
         }
-
         //upload photo/audio To firebase storage
         uploadPostBtn.isEnabled = false
         val photoUploadUri = URI as Uri
-        var photo : String? = null
+
         val photoreference = storageRef.child("images/${System.currentTimeMillis()}-photo.jpg")
+        var photoDownloadUrl: String? = null
+        var audioDownloadUrl: String? = null
         photoreference.putFile(photoUploadUri)
-            .continueWithTask { photoUploadTask ->
-                Log.i(TAG, "upload bytes: ${photoUploadTask.result?.bytesTransferred}")
-                photo = photoUploadTask.toString()
-                photoreference.downloadUrl
-            }
             .addOnCompleteListener { postCreationTask ->
-                uploadPostBtn.isEnabled = true
-                if (!postCreationTask.isSuccessful) {
-                    Log.e(TAG, "exception during Firebase operations")
-                    Toast.makeText(this, "Failed to save post", Toast.LENGTH_SHORT).show()
+                photoreference.downloadUrl.addOnSuccessListener {
+                    photoDownloadUrl = it.toString()
+
+                    uploadPostBtn.isEnabled = true
+                    if (!postCreationTask.isSuccessful) {
+                        Log.e(TAG, "exception during Firebase operations")
+                        Toast.makeText(this, "Failed to save post", Toast.LENGTH_SHORT).show()
+                    }
+                    val audioUploadUri = URI as Uri
+                    val Audioreference =
+                        storageRef.child("audios/${System.currentTimeMillis()}-audio.wav")
+                    Audioreference.putFile(audioUploadUri)
+                        .addOnCompleteListener {
+                            //image.setImageResource(0)
+                            //songUrl.setText(0)
+                            Audioreference.downloadUrl.addOnSuccessListener {
+                                audioDownloadUrl = it.toString()
+                                val post = Post(
+                                    textViewNameArtist.text.toString(),
+                                    textViewNameTrack.text.toString(),
+                                    photoDownloadUrl!!,
+                                    System.currentTimeMillis(),
+                                    signedInUser,
+                                    audioDownloadUrl!!,
+                                    genreResult.text.toString(),
+                                    spotify.text.toString(),
+                                    instagram.text.toString(),
+                                    facebook.text.toString(),
+                                    soundcloud.text.toString()
+                                )
+                                firestoreDB.collection("posts").add(post)
+                                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
+                                val ProfileIntent = Intent(this, ProfileActivity::class.java)
+                                ProfileIntent.putExtra(EXTRA_USERNAME, signedInUser?.username)
+                                startActivity(ProfileIntent)
+                                finish()
+                            }
+                        }
                 }
-                val audioUploadUri = URI as Uri
-                val Audioreference = storageRef.child("audios/${System.currentTimeMillis()}-audio.wav")
-                Audioreference.putFile(audioUploadUri)
-                    .continueWithTask { audioUploadTask ->
-                        Log.i(TAG, "upload bytes: ${audioUploadTask.result?.bytesTransferred}")
-                        Audioreference.downloadUrl
-                    }
-                    .continueWithTask { file->
-                        val post = Post(
-                            textViewNameArtist.text.toString(),
-                            textViewNameTrack.text.toString(),
-                            photo!!,
-                            System.currentTimeMillis(),
-                            signedInUser,
-                            file.result.toString(),
-                            genreResult.text.toString(),
-                            spotify.text.toString(),
-                            instagram.text.toString(),
-                            facebook.text.toString(),
-                            soundcloud.text.toString()
-                        )
-                        firestoreDB.collection("posts").add(post)
-                    }.addOnCompleteListener {
-                        //image.setImageResource(0)
-                        //songUrl.setText(0)
-                        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
-                        val ProfileIntent = Intent(this, ProfileActivity::class.java)
-                        ProfileIntent.putExtra(EXTRA_USERNAME, signedInUser?.username)
-                        startActivity(ProfileIntent)
-                        finish()
-                    }
                 //textViewNameArtist.text.clear()
             }
     }
@@ -186,7 +179,6 @@ class CreatePostActivity : AppCompatActivity() {
     }
 
     fun spinner (){
-
         option = findViewById(R.id.genreSpinner)
         genreResult = findViewById(R.id.spinnerResult)
         val options = arrayOf("Pop","Rock","trap","Hiphop","rap","house","Electronic")

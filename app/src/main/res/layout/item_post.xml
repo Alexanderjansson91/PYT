@@ -85,8 +85,9 @@
         android:backgroundTint="#000000"
         android:fontFamily="sans-serif-smallcaps"
         android:foregroundGravity="center"
-        android:text="View"
+        android:text="Show"
         android:textColor="#FFFFFF"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/postTime" />
 
@@ -164,4 +165,3 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
