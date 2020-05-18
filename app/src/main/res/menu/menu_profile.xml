@@ -4,6 +4,9 @@
 
     <item
         android:id="@+id/menu_logout"
-        android:tint="@android:color/white"
+        android:checkable="false"
+        android:checked="false"
+        android:tint="@android:color/background_light"
+        android:color="#FFFFFF"
         android:title="Logout" />
 </menu>

@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
     </style>
 
     <!-- Color/size for my Headline -->
@@ -16,11 +17,17 @@
                 <item name="android:textStyle">bold</item>
     </style>
 
-
-
     <style name="AppToolbar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:itemTextAppearance">@android:color/primary_text_dark</item>
+        <item name="android:actionMenuTextColor">@color/menuprofile</item>
+
     </style>
+
+    <style name="AppToolBarCreatePage" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimaryDark">@color/colorTopbar</item>
+    </style>
+
+
 
 
 </resources>

@@ -1,23 +1,30 @@
 package com.example.pytapplication
 
+import android.content.ClipData
 import android.content.Intent
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.ImageButton
+import android.view.View
+import android.widget.*
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pytapplication.fragments.SortFragment
 import com.example.pytapplication.models.Post
 import com.example.pytapplication.models.User
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import kotlinx.android.synthetic.main.activity_posts.*
+import kotlinx.android.synthetic.main.item_post.*
 
 private const val TAG = "message"
 private const val EXTRA_USERNAME = "EXTRA_USERNAME"
@@ -31,13 +38,14 @@ open class PostsActivity : AppCompatActivity() {
     private lateinit var mp : MediaPlayer
     private var totalTime : Int =0
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_posts)
 
+       // makeFragment(sortFragment)
         //postSong = Post()
         //mp = MediaPlayer.create(this, postSong.audioUrl.toInt())
+        bottomNavigation()
 
         mp = MediaPlayer.create(this,R.raw.skickabilder)
         mp.isLooping= true
@@ -92,12 +100,12 @@ open class PostsActivity : AppCompatActivity() {
             }
         }
         // Intent to CreatePostActivity
-        val addBtn = findViewById<FloatingActionButton>(R.id.createNewPostBtn)
+        /*val addBtn = findViewById<FloatingActionButton>(R.id.createNewPostBtn)
         addBtn.setOnClickListener {
             val intent = Intent(this, CreatePostActivity::class.java)
             startActivity(intent)
             println(posts)
-        }
+        }*/
     }
 
     //my top menu(profile)
@@ -146,4 +154,46 @@ open class PostsActivity : AppCompatActivity() {
             println("hej")
 
         }
+
+        fun bottomNavigation (){
+
+                bottomnavigation.setOnNavigationItemSelectedListener { item ->
+                    when (item.itemId) {
+                        R.id.home -> {
+                            val intent = Intent(this, PostsActivity::class.java)
+                            startActivity(intent)
+                            return@setOnNavigationItemSelectedListener true
+                        }
+                        R.id.add -> {
+                            val intent = Intent(this, CreatePostActivity::class.java)
+                            startActivity(intent)
+                            return@setOnNavigationItemSelectedListener true
+                        }
+                        R.id.filter -> sortFragment()
+                    }
+                    false
+
+                }
+
+
+
+            }
+
+    fun sortFragment() {
+        val sortFragment = SortFragment()
+        val transaktion = supportFragmentManager.beginTransaction()
+        transaktion.add(R.id.fl_wrapper, sortFragment, "sortFragment")
+        transaktion.commit()
     }
+
+
+
+
+
+
+
+
+
+
+        }
+

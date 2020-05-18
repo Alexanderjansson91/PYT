@@ -10,10 +10,12 @@
         android:id="@+id/new_user_Email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="80dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
+        android:textColor="#027171"
+        android:textColorHint="#027171"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -26,6 +28,7 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
+        android:textColorHint="#027171"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/new_user_Email" />
@@ -34,8 +37,11 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:text="Post Your Track"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -48,19 +54,26 @@
         android:ems="10"
         android:hint="Name"
         android:inputType="textPersonName"
+        android:textColorHint="#027171"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/new_user_Password" />
 
     <Button
         android:id="@+id/New_User_Button"
-        android:layout_width="192dp"
-        android:layout_height="96dp"
-        android:layout_marginTop="150dp"
+        android:layout_width="360dp"
+        android:layout_height="63dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="#000000"
+        android:foregroundGravity="center"
+        android:gravity="center_horizontal|center_vertical"
         android:text="Join us"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_user_Username" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView4"
@@ -69,8 +82,23 @@
         android:layout_marginTop="30dp"
         android:gravity="center_horizontal"
         android:text="Discover new music and market your own music, welcome to PYT."
+        android:textColor="#027171"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="354dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#68027171"
+        android:editable="true"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:shadowColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

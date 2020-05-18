@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.core.content.ContextCompat
 import com.example.pytapplication.models.Post
 import com.example.pytapplication.models.User
 import com.google.firebase.auth.FirebaseAuth
@@ -15,8 +16,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_create_post.*
-import kotlinx.android.synthetic.main.activity_create_post.view.*
-import org.w3c.dom.Text
 
 private const val TAG = "CreatePostActivity"
 private const val PICK_PHOTO_CODE = 1337
@@ -36,9 +35,10 @@ class CreatePostActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_post)
         spinner ()
+
+
         storageRef = FirebaseStorage.getInstance().reference
         firestoreDB = FirebaseFirestore.getInstance()
-
         //Check user
         firestoreDB.collection("users")
             .document(FirebaseAuth.getInstance().currentUser?.uid as String)

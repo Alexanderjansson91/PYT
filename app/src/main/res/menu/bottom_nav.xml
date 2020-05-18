@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_whatshot_black_24dp"
+        android:title="what's new"/>
+
+    <item
+        android:id="@+id/add"
+        android:icon="@drawable/ic_add_box_black_24dp"
+        android:title="Add"/>
+
+    <item
+        android:id="@+id/filter"
+        android:icon="@drawable/ic_sort_black_24dp"
+        android:title="Filter"/>
+
+</menu>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+    tools:context=".fragments.SortFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:id="@+id/genre_Sort_Textview"
+        android:layout_width="match_parent"
+        android:layout_height="187dp"
+        android:layout_gravity="bottom"
+        android:background="#000000"
+        android:gravity="bottom"
+        android:text="@string/hello_blank_fragment" />
+
+    <Spinner
+        android:id="@+id/sort_Spinner"
+        android:layout_width="288dp"
+        android:layout_height="53dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="100dp"
+        android:background="#A54040"
+        android:backgroundTint="#9CFFFBFB"
+        android:foregroundTint="#51000000"
+        android:textAlignment="center" />
+
+    <ImageButton
+        android:id="@+id/close_Sort_Fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="140dp"
+        android:backgroundTint="#00FFFFFF"
+        android:src="@drawable/ic_indeterminate_check_box_black_24dp" />
+
+</FrameLayout>
