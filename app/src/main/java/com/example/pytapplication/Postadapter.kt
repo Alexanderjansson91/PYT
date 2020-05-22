@@ -10,6 +10,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Handler
 import android.os.Message
+import android.provider.MediaStore
 import android.text.format.DateUtils
 import android.text.method.TextKeyListener.clear
 import android.transition.AutoTransition
@@ -23,8 +24,10 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pytapplication.models.Post
+import com.example.pytapplication.models.User
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import java.lang.System.load
 
 
 lateinit var activity: Activity
@@ -36,7 +39,7 @@ private lateinit var mp: MediaPlayer
 private var totalTime: Int = 0
 private var post: Post? = null
 private lateinit var storageRef: StorageReference
-
+private var user: User? = null
 class Postadapter(val context: Context, val posts: List<Post>) :
     RecyclerView.Adapter<Postadapter.ViewHolder>() {
 
@@ -55,6 +58,7 @@ class Postadapter(val context: Context, val posts: List<Post>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(posts[position])
 
+
         if (selectedPosition == position) {
             holder.itemView.setBackgroundColor(Color.parseColor("#52027171"))
             holder.btn?.visibility = View.VISIBLE
@@ -62,24 +66,20 @@ class Postadapter(val context: Context, val posts: List<Post>) :
         } else {
             holder.itemView.setBackgroundColor(Color.parseColor("#ffffff"))
             holder.btn?.visibility = View.GONE
-
         }
-        holder.itemView.setOnClickListener {
 
-            if (holder.itemView.isPressed) {
-                playMusic()
+        holder.itemView.setOnClickListener {
                 selectedPosition = position
                 notifyDataSetChanged()
                 Toast.makeText(context, "You play # ${position + 1}", Toast.LENGTH_SHORT).show()
-
-            } else if (holder.itemView.equals(false)) {
-                stopMusic()
-            }
+                playMusic()
         }
+
     }
 
     //inner class for my viewhodler
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
         val btn = itemView.findViewById<Button?>(R.id.show_Song_Info)
         val textViewProfilName = itemView.findViewById<TextView>(R.id.postUsername)
         val textViewTrack = itemView.findViewById<TextView>(R.id.postTrackname)
@@ -88,7 +88,10 @@ class Postadapter(val context: Context, val posts: List<Post>) :
         var PostImage = itemView.findViewById<ImageView>(R.id.postImage)
         val genreTextView = itemView.findViewById<TextView>(R.id.genre)
         val spotifyLinkBtn = itemView.findViewById<ImageButton?>(R.id.button_Spotify)
-        val seekBar = itemView.findViewById<SeekBar>(R.id.seekBar)
+        val facebookLinkBtn = itemView.findViewById<ImageButton?>(R.id.button_Facebook)
+        val instagramLinkBtn = itemView.findViewById<ImageButton?>(R.id.button_Instagram)
+        val soundcloudLinkBtn = itemView.findViewById<ImageButton?>(R.id.button_Soundcloud)
+
         val shareSongBtn = itemView.findViewById<ImageButton>(R.id.share_Button)
         //val playMusicButton = itemView.findViewById<ImageButton>(R.id.play_Button)
 
@@ -98,7 +101,7 @@ class Postadapter(val context: Context, val posts: List<Post>) :
             textViewTrack.text = post.trackname
             textViewName.text = post.artistname
             genreTextView.text = post.genre
-            Glide.with(context).load(post.imageuUrl).into(PostImage)
+            Glide.with(context).load(post.user?.imageuUrl).into(PostImage)
             textViewTime.text = DateUtils.getRelativeTimeSpanString(post.creationTimems)
 
 
@@ -111,6 +114,31 @@ class Postadapter(val context: Context, val posts: List<Post>) :
                 startActivity(context, i, null)
                 println(url)
             }
+            facebookLinkBtn?.setOnClickListener {
+                var url: String?
+                url = post?.facebook.toString()
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse(url)
+                startActivity(context, i, null)
+                println(url)
+            }
+            instagramLinkBtn?.setOnClickListener {
+                var url: String?
+                url = post?.instagram.toString()
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse(url)
+                startActivity(context, i, null)
+                println(url)
+            }
+            soundcloudLinkBtn?.setOnClickListener {
+                var url: String?
+                url = post?.soundcloud.toString()
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse(url)
+                startActivity(context, i, null)
+                println(url)
+            }
+
             shareSongBtn.setOnClickListener {
                 val sendIntent = Intent()
                 sendIntent.action = Intent.ACTION_SEND
@@ -129,12 +157,12 @@ class Postadapter(val context: Context, val posts: List<Post>) :
             itemView.setOnClickListener {
                 val position: Int = adapterPosition
                 Toast.makeText(itemView.context, "You play # ${position + 1}", Toast.LENGTH_SHORT).show()
-                playMusic()
-            }
+
+        }
 
             val viewSongbtn = itemView.findViewById<Button?>(R.id.show_Song_Info)
             val expandableLayout = itemView.findViewById<View>(R.id.expandableLayout)
-            val cardView = itemView.findViewById<CardView>(R.id.cardView)
+            val cardView = itemView.findViewById<CardView>(R.id.cardview_post)
 
             viewSongbtn?.setOnClickListener {
                 if (expandableLayout.visibility == View.GONE) {
@@ -151,20 +179,27 @@ class Postadapter(val context: Context, val posts: List<Post>) :
     }
 
     fun playMusic() {
-
-               val storage = FirebaseStorage.getInstance()
-        storage.reference.child("audios/1589459245317-audio.wav").downloadUrl.addOnSuccessListener({
+            val storage = FirebaseStorage.getInstance()
+            storage.reference.child("audios/1589889401810-audio.wav").downloadUrl.addOnSuccessListener({ url->
             val mediaPlayer = MediaPlayer()
-            mediaPlayer.setDataSource(it.toString())
+            mediaPlayer.setDataSource(url.toString())
             mediaPlayer.setOnPreparedListener { player ->
-                player.start()
+                    player.start()
             }
             mediaPlayer.prepareAsync()
         })
-
     }
-    fun stopMusic() {
-      mp.pause()
+    fun reset() {
+
+        val mediaPlayer = MediaPlayer()
+
+        if (mediaPlayer != null) {
+            mediaPlayer.stop()
+            mediaPlayer.reset()
+            mediaPlayer.release()
+
+        }
     }
 }
+
 

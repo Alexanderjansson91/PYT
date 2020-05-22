@@ -39,6 +39,7 @@ class CreatePostActivity : AppCompatActivity() {
 
         storageRef = FirebaseStorage.getInstance().reference
         firestoreDB = FirebaseFirestore.getInstance()
+
         //Check user
         firestoreDB.collection("users")
             .document(FirebaseAuth.getInstance().currentUser?.uid as String)
@@ -50,17 +51,6 @@ class CreatePostActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.i(TAG, "Failure fetching signed User", exception)
             }
-
-        //Button to set cover to your post
-        val imageButton = findViewById<Button>(R.id.imagePost)
-        imageButton.setOnClickListener {
-            Log.i(TAG, "Open up image picker on device")
-            var imagePickerIntent = Intent(Intent.ACTION_GET_CONTENT)
-            imagePickerIntent.type = "image/*"
-            if (imagePickerIntent.resolveActivity(packageManager) != null){
-                startActivityForResult(imagePickerIntent, PICK_PHOTO_CODE)
-            }
-        }
 
         //Button to set audiofile to yout post
         val soundbtn = findViewById<Button>(R.id.soundfile)
@@ -83,7 +73,6 @@ class CreatePostActivity : AppCompatActivity() {
 
     //Funtions how handlde the submit
     private fun handleSubmitButtonClick() {
-        var image = findViewById<ImageView>(R.id.imageView_Post)
         var textViewNameArtist = findViewById<TextView>(R.id.nameArtist)
         var textViewNameTrack = findViewById<TextView>(R.id.nameTrack)
         var songUrl = findViewById<TextView>(R.id.uriSong)
@@ -93,7 +82,7 @@ class CreatePostActivity : AppCompatActivity() {
         var facebook = findViewById<EditText>(R.id.facebook_URL)
         var instagram = findViewById<EditText>(R.id.instagram_URL)
         if (URI == null) {
-            Toast.makeText(this, "No photo is selected", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "No audio is selected", Toast.LENGTH_SHORT).show()
             return
         }
         if (textViewNameArtist == null) {
@@ -104,36 +93,19 @@ class CreatePostActivity : AppCompatActivity() {
             Toast.makeText(this, "No user", Toast.LENGTH_SHORT).show()
             return
         }
-        //upload photo/audio To firebase storage
+        //upload audio To firebase storage
         uploadPostBtn.isEnabled = false
-        val photoUploadUri = URI as Uri
-
-        val photoreference = storageRef.child("images/${System.currentTimeMillis()}-photo.jpg")
-        var photoDownloadUrl: String? = null
         var audioDownloadUrl: String? = null
-        photoreference.putFile(photoUploadUri)
-            .addOnCompleteListener { postCreationTask ->
-                photoreference.downloadUrl.addOnSuccessListener {
-                    photoDownloadUrl = it.toString()
-
                     uploadPostBtn.isEnabled = true
-                    if (!postCreationTask.isSuccessful) {
-                        Log.e(TAG, "exception during Firebase operations")
-                        Toast.makeText(this, "Failed to save post", Toast.LENGTH_SHORT).show()
-                    }
                     val audioUploadUri = URI as Uri
-                    val Audioreference =
-                        storageRef.child("audios/${System.currentTimeMillis()}-audio.wav")
+                    val Audioreference = storageRef.child("audios/${System.currentTimeMillis()}-audio.wav")
                     Audioreference.putFile(audioUploadUri)
                         .addOnCompleteListener {
-                            //image.setImageResource(0)
-                            //songUrl.setText(0)
                             Audioreference.downloadUrl.addOnSuccessListener {
                                 audioDownloadUrl = it.toString()
                                 val post = Post(
                                     textViewNameArtist.text.toString(),
                                     textViewNameTrack.text.toString(),
-                                    photoDownloadUrl!!,
                                     System.currentTimeMillis(),
                                     signedInUser,
                                     audioDownloadUrl!!,
@@ -146,15 +118,13 @@ class CreatePostActivity : AppCompatActivity() {
                                 firestoreDB.collection("posts").add(post)
                                 Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
                                 val ProfileIntent = Intent(this, ProfileActivity::class.java)
+                                //ProfileIntent.setAction(Intent.ACTION_SEND_MULTIPLE)
                                 ProfileIntent.putExtra(EXTRA_USERNAME, signedInUser?.username)
                                 startActivity(ProfileIntent)
                                 finish()
                             }
                         }
-                }
-                //textViewNameArtist.text.clear()
-            }
-    }
+                    }
 
 
     //Notify when user have selected a Image
@@ -162,12 +132,7 @@ class CreatePostActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         val uriSong = findViewById<TextView>(R.id.uriSong)
         if (resultCode == Activity.RESULT_OK){
-        if (requestCode == PICK_PHOTO_CODE){
-            URI = data?.data
-                imageView_Post.setImageURI(URI)
-                Log.i(TAG, "photoUri $URI")
-
-           } else if (requestCode == PICK_AUDIO_CODE){
+         if (requestCode == PICK_AUDIO_CODE){
             URI = data?.data
                 uriSong.text = URI.toString()
                 Log.i(TAG, "VideoUri $URI")
@@ -183,7 +148,6 @@ class CreatePostActivity : AppCompatActivity() {
         genreResult = findViewById(R.id.spinnerResult)
         val options = arrayOf("Pop","Rock","trap","Hiphop","rap","house","Electronic")
         option.adapter = ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, options)
-
 
         option.onItemSelectedListener = object  :AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {

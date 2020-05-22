@@ -1,11 +1,13 @@
 package com.example.pytapplication
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.nfc.Tag
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import android.view.Menu
 import android.widget.Button
 import android.widget.EditText
@@ -13,7 +15,9 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_forgot_password.*
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_posts.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -27,6 +31,7 @@ class LoginActivity : AppCompatActivity() {
         if (auth.currentUser != null) {
             getPostActivity()
         }
+
         val newUserButton = findViewById<Button>(R.id.new_Profil)
         newUserButton.setOnClickListener {
            goToRegisterPage()
@@ -42,6 +47,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
 
+
             //Firebase authentication check
             auth.signInWithEmailAndPassword(email,password).addOnCompleteListener { task ->
                 btnLogin.isEnabled = true
@@ -54,6 +60,16 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+
+        val forgotPassword = findViewById<Button>(R.id.forgot_Password_button)
+        forgotPassword.setOnClickListener {
+            goToforgotPasswordPage ()
+        }
+    }
+
+    fun goToforgotPasswordPage (){
+        val intent = Intent(this, ForgotPasswordActivity::class.java)
+        startActivity(intent)
     }
 
     //go to register page
@@ -61,6 +77,7 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, createUserActivity::class.java)
         startActivity(intent)
     }
+
 
     //intent to PostsActivity
     private fun getPostActivity() {

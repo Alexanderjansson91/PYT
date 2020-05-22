@@ -1,3 +1,9 @@
 package com.example.pytapplication.models
 
-data class User(var username: String = " ")
+import com.google.firebase.firestore.PropertyName
+
+data class User(
+    var username: String = " ",
+    @get:PropertyName("profileimage_url") @set:PropertyName("profileimage_url") var imageuUrl: String = ""
+
+    )

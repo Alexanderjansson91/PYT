@@ -20,14 +20,16 @@
 
     <Spinner
         android:id="@+id/sort_Spinner"
+        style="@style/Widget.AppCompat.Spinner.DropDown"
         android:layout_width="288dp"
         android:layout_height="53dp"
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="100dp"
-        android:background="#A54040"
-        android:backgroundTint="#9CFFFBFB"
-        android:foregroundTint="#51000000"
-        android:textAlignment="center" />
+        android:backgroundTint="#027171"
+        android:foregroundTint="#00F80365"
+        android:popupTheme="@style/Widget.AppCompat.Spinner.DropDown"
+        android:textAlignment="center"
+        android:textColor="@color/menuprofile" />
 
     <ImageButton
         android:id="@+id/close_Sort_Fragment"

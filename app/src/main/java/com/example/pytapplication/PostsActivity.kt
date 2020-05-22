@@ -23,8 +23,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.core.OrderBy
 import kotlinx.android.synthetic.main.activity_posts.*
 import kotlinx.android.synthetic.main.item_post.*
+import java.util.*
 
 private const val TAG = "message"
 private const val EXTRA_USERNAME = "EXTRA_USERNAME"
@@ -41,7 +43,7 @@ open class PostsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_posts)
-
+        //sortGenre ()
        // makeFragment(sortFragment)
         //postSong = Post()
         //mp = MediaPlayer.create(this, postSong.audioUrl.toInt())
@@ -185,15 +187,9 @@ open class PostsActivity : AppCompatActivity() {
         transaktion.add(R.id.fl_wrapper, sortFragment, "sortFragment")
         transaktion.commit()
     }
+    /*fun sortGenre(){
+    firestoreDB.collection("posts").orderBy("genre").limit(40)
 
-
-
-
-
-
-
-
-
-
-        }
+    }*/
+}
 
