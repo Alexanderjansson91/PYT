@@ -6,16 +6,21 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/backarrow</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_black_24dp</item>
 
     </style>
+
 
     <!-- Color/size for my Headline -->
     <style name ="TextAppearance.AppCompat.Widget.ActionBar.Title" parent="@android:style/TextAppearance">
                 <item name="android:textSize">30dp</item>
                 <item name="android:textColor">@color/title_color</item>
-                <item name="android:fontFamily">monospace</item>
+                <item name="android:fontFamily">montserrat</item>
                 <item name="android:textStyle">bold</item>
     </style>
+
+
 
     <style name="AppToolbar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:itemTextAppearance">@android:color/primary_text_dark</item>
@@ -26,8 +31,5 @@
     <style name="AppToolBarCreatePage" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimaryDark">@color/colorTopbar</item>
     </style>
-
-
-
 
 </resources>

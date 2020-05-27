@@ -2,6 +2,9 @@ package com.example.pytapplication
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -34,9 +37,14 @@ class CreatePostActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_post)
+
+        val actionbar = supportActionBar
+        actionbar!!.title = "PYT"
+
+        actionbar.setDisplayHomeAsUpEnabled(true)
+        actionbar.setDisplayHomeAsUpEnabled(true)
+
         spinner ()
-
-
         storageRef = FirebaseStorage.getInstance().reference
         firestoreDB = FirebaseFirestore.getInstance()
 
@@ -63,7 +71,6 @@ class CreatePostActivity : AppCompatActivity() {
             }
         }
 
-
         //button how upload the post and receive handleSubmitButtonClick ()
         val uploadPost = findViewById<Button>(R.id.uploadPostBtn)
         uploadPost.setOnClickListener {
@@ -75,12 +82,12 @@ class CreatePostActivity : AppCompatActivity() {
     private fun handleSubmitButtonClick() {
         var textViewNameArtist = findViewById<TextView>(R.id.nameArtist)
         var textViewNameTrack = findViewById<TextView>(R.id.nameTrack)
-        var songUrl = findViewById<TextView>(R.id.uriSong)
         genreResult = findViewById(R.id.spinnerResult)
         var spotify = findViewById<EditText>(R.id.spotify_URL)
         var soundcloud = findViewById<EditText>(R.id.soundcloud_URL)
         var facebook = findViewById<EditText>(R.id.facebook_URL)
         var instagram = findViewById<EditText>(R.id.instagram_URL)
+
         if (URI == null) {
             Toast.makeText(this, "No audio is selected", Toast.LENGTH_SHORT).show()
             return
@@ -93,6 +100,7 @@ class CreatePostActivity : AppCompatActivity() {
             Toast.makeText(this, "No user", Toast.LENGTH_SHORT).show()
             return
         }
+
         //upload audio To firebase storage
         uploadPostBtn.isEnabled = false
         var audioDownloadUrl: String? = null
@@ -103,6 +111,8 @@ class CreatePostActivity : AppCompatActivity() {
                         .addOnCompleteListener {
                             Audioreference.downloadUrl.addOnSuccessListener {
                                 audioDownloadUrl = it.toString()
+
+                                //Creating a new post object by input value
                                 val post = Post(
                                     textViewNameArtist.text.toString(),
                                     textViewNameTrack.text.toString(),
@@ -127,14 +137,15 @@ class CreatePostActivity : AppCompatActivity() {
                     }
 
 
-    //Notify when user have selected a Image
+    //Notify when user have selected a Audio file
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val uriSong = findViewById<TextView>(R.id.uriSong)
         if (resultCode == Activity.RESULT_OK){
          if (requestCode == PICK_AUDIO_CODE){
             URI = data?.data
-                uriSong.text = URI.toString()
+                //uriSong.text = URI.toString()
+                uriSong.text = "AUDIO ✔"
                 Log.i(TAG, "VideoUri $URI")
              }
             else {
@@ -143,6 +154,7 @@ class CreatePostActivity : AppCompatActivity() {
         }
     }
 
+    //Spinner to pick Genre
     fun spinner (){
         option = findViewById(R.id.genreSpinner)
         genreResult = findViewById(R.id.spinnerResult)
@@ -158,6 +170,11 @@ class CreatePostActivity : AppCompatActivity() {
                 genreResult.text = options.get(position)
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }
 

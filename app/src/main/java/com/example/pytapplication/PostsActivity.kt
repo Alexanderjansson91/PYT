@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.core.OrderBy
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_posts.*
 import kotlinx.android.synthetic.main.item_post.*
 import java.util.*
@@ -37,26 +38,22 @@ open class PostsActivity : AppCompatActivity() {
     private lateinit var posts : MutableList<Post>
     private lateinit var postSong : Post
     private lateinit var adapter: Postadapter
-    private lateinit var mp : MediaPlayer
     private var totalTime : Int =0
+    private lateinit var mp2 : MediaPlayer
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_posts)
-        //sortGenre ()
-       // makeFragment(sortFragment)
-        //postSong = Post()
-        //mp = MediaPlayer.create(this, postSong.audioUrl.toInt())
         bottomNavigation()
 
-        mp = MediaPlayer.create(this,R.raw.skickabilder)
-        mp.isLooping= true
-        mp.setVolume(0.5f,0.5f)
-        totalTime = mp.duration
+
+
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPosts)
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
-        playBtnClick()
+
         posts = mutableListOf()
         adapter = Postadapter(this, posts)
         recyclerView.adapter = adapter
@@ -101,13 +98,6 @@ open class PostsActivity : AppCompatActivity() {
                 Log.i(TAG, "Post ${post}")
             }
         }
-        // Intent to CreatePostActivity
-        /*val addBtn = findViewById<FloatingActionButton>(R.id.createNewPostBtn)
-        addBtn.setOnClickListener {
-            val intent = Intent(this, CreatePostActivity::class.java)
-            startActivity(intent)
-            println(posts)
-        }*/
     }
 
     //my top menu(profile)
@@ -126,70 +116,37 @@ open class PostsActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
-     fun playBtnClick() {
-         if (mp.isPlaying) {
-             mp.start()
-             Log.e(TAG,"Hejdu")
-         }else{
-             mp.pause()
-         }
 
-          /*  if (mp.isPlaying) {
-                mp.pause()
-                recyclerView.setBackgroundResource(R.drawable.play)
-            } else {
-                mp.start()
-                recyclerView.setBackgroundResource(R.drawable.stop)
-            }*/
 
-   }
+    //Bottom navigation
+    fun bottomNavigation (){
 
-    fun shareSong(){
-
-            val myIntent = Intent(Intent.ACTION_SEND)
-            myIntent.type = "type/palin"
-            val shareBody = "You are body"
-            val shareSub = "You subject here"
-            myIntent.putExtra(Intent.EXTRA_SUBJECT, shareBody)
-            myIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub)
-            startActivity(Intent.createChooser(myIntent,"share"))
-            println("hej")
+        bottomnavigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> {
+                    val intent = Intent(this, PostsActivity::class.java)
+                    startActivity(intent)
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.add -> {
+                    val intent = Intent(this, CreatePostActivity::class.java)
+                    startActivity(intent)
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.filter -> sortFragment()
+            }
+            false
 
         }
+    }
 
-        fun bottomNavigation (){
-
-                bottomnavigation.setOnNavigationItemSelectedListener { item ->
-                    when (item.itemId) {
-                        R.id.home -> {
-                            val intent = Intent(this, PostsActivity::class.java)
-                            startActivity(intent)
-                            return@setOnNavigationItemSelectedListener true
-                        }
-                        R.id.add -> {
-                            val intent = Intent(this, CreatePostActivity::class.java)
-                            startActivity(intent)
-                            return@setOnNavigationItemSelectedListener true
-                        }
-                        R.id.filter -> sortFragment()
-                    }
-                    false
-
-                }
-
-
-
-            }
-
+    //Sort fragment
     fun sortFragment() {
         val sortFragment = SortFragment()
         val transaktion = supportFragmentManager.beginTransaction()
         transaktion.add(R.id.fl_wrapper, sortFragment, "sortFragment")
         transaktion.commit()
     }
-    /*fun sortGenre(){
-    firestoreDB.collection("posts").orderBy("genre").limit(40)
-
-    }*/
 }
+
 

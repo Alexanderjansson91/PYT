@@ -1,6 +1,7 @@
 package com.example.pytapplication
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -16,8 +17,10 @@ class ProfileActivity : PostsActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_profile,menu)
+
         return true
     }
+
 
     //Logout User
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -28,6 +31,4 @@ class ProfileActivity : PostsActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
-
 }

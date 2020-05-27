@@ -7,4 +7,6 @@
     <color name="title_color">#FFFFFF</color>
     <color name="colorTopbar">#027171</color>
     <color name="menuprofile">#FFFFFF</color>
+    <color name="backarrow">#FFFFFF</color>
+
 </resources>

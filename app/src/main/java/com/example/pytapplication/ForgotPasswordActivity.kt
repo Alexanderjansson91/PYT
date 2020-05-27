@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 class ForgotPasswordActivity : AppCompatActivity() {
 
-    lateinit var auth : FirebaseAuth
+    lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,37 +21,35 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
         val forgotPasswordBtn = findViewById<Button>(R.id.reset_password_btn)
 
+        //Clicklistner on my "Reset button"
         forgotPasswordBtn.setOnClickListener {
-
             val username = findViewById<EditText>(R.id.email_reset_Password)
             forgotPassword(username)
-            }
-
         }
 
-    fun forgotPassword(username : EditText?) {
+    }
+
+    //Function how reset password and send and reset link you valid user.
+    fun forgotPassword(username: EditText?) {
 
         val auth = FirebaseAuth.getInstance()
-
-        if (username?.text.toString().isEmpty()){
+        if (username?.text.toString().isEmpty()) {
             return
         }
-        if (!Patterns.EMAIL_ADDRESS.matcher(username?.text.toString()).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(username?.text.toString()).matches()) {
             return
         }
-
 
         auth.sendPasswordResetEmail(username?.text.toString())
             .addOnCompleteListener {
-                if(it.isSuccessful){
-                    Toast.makeText(this,"Email sent, check inbox", Toast.LENGTH_SHORT).show()
-                }else{
-                    Toast.makeText(this,"Something ent wrong", Toast.LENGTH_SHORT).show()
+                if (it.isSuccessful) {
+                    Toast.makeText(this, "Email sent, check inbox", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Something ent wrong", Toast.LENGTH_SHORT).show()
 
                 }
             }
-    }
-
+        }
     }
 
 

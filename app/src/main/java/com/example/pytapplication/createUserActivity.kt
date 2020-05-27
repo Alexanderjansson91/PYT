@@ -42,8 +42,6 @@ class createUserActivity : AppCompatActivity() {
         firestoreDB = FirebaseFirestore.getInstance()
         storageRef = FirebaseStorage.getInstance().reference
 
-
-        //   newUsername = User()
         //Button how creates a new user
         mAuth = FirebaseAuth.getInstance()
         val createNewUser = findViewById<Button>(R.id.New_User_Button)
@@ -62,6 +60,7 @@ class createUserActivity : AppCompatActivity() {
             }
         }
     }
+
     //New user function
     private fun registerUser() {
         val emailTxt = findViewById(R.id.new_user_Email) as EditText
@@ -127,5 +126,4 @@ class createUserActivity : AppCompatActivity() {
             }
         }
     }
-
 }
