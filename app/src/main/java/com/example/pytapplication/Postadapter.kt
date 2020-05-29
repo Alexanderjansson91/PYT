@@ -21,7 +21,6 @@ import com.example.pytapplication.models.Post
 import com.example.pytapplication.models.User
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import java.io.File
 
 
 lateinit var activity: Activity
@@ -29,13 +28,18 @@ var selectedPosition: Int = -1
 private const val TAG = "MyMessage"
 //val postActivity = PostsActivity()
 private var postActivity: PostsActivity? = null
-private lateinit var mp: MediaPlayer
+
 private var totalTime: Int = 0
 private var post: Post? = null
+
 private lateinit var storageRef: StorageReference
 private var user: User? = null
+
 class Postadapter(val context: Context, val posts: List<Post>) :
     RecyclerView.Adapter<Postadapter.ViewHolder>() {
+    var postPosistion = 0
+
+    var mp = MediaPlayer()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_post, parent, false)
@@ -53,6 +57,7 @@ class Postadapter(val context: Context, val posts: List<Post>) :
         holder.bind(posts[position])
         holder.postPosistion = position
 
+
         if (selectedPosition == position) {
             holder.itemView.setBackgroundColor(Color.parseColor("#52027171"))
             holder.btn?.visibility = View.VISIBLE
@@ -65,21 +70,30 @@ class Postadapter(val context: Context, val posts: List<Post>) :
             selectedPosition = position
             notifyDataSetChanged()
             Toast.makeText(context, "You play # ${position + 1}", Toast.LENGTH_SHORT).show()
-        }
-    }
+            playmusic(selectedPosition)
 
+    }
+    }
+    //Play and and pause music and set Audiosource
     fun playmusic(position: Int) {
-        //set Audio storage ref from Firebase
+
         val post = posts[position]
-       /* val storage = FirebaseStorage.getInstance()
-        storage.reference.(post.audioUrl).addOnSuccessListener({ url->*/
-            //mp = MediaPlayer.create(context, R.raw.skickabilder)
-            mp  = MediaPlayer()
-            mp.setDataSource(post.audioUrl)
-            mp.setOnPreparedListener { player ->
-                player.start()
+
+
+            if (mp.isPlaying()) {
+                if (mp != null) {
+                    mp.pause()
+
+                }
+            } else {
+                if (mp != null) {
+                    mp.release()
+                    mp = MediaPlayer()
+                    mp.setDataSource(post.audioUrl)
+                    mp.prepare()
+                    mp.start()
+                }
             }
-            mp.prepareAsync()
     }
 
     //inner class for my viewhodler
@@ -129,10 +143,6 @@ class Postadapter(val context: Context, val posts: List<Post>) :
             Glide.with(context).load(post.user?.imageuUrl).into(PostImage)
             textViewTime.text = DateUtils.getRelativeTimeSpanString(post.creationTimems)
 
-            playbtn.setOnClickListener {
-                playmusic(postPosistion)
-                Toast.makeText(context, "You play ${postPosistion + 1}", Toast.LENGTH_SHORT).show()
-            }
 
             //spotify button
             spotifyLinkBtn?.setOnClickListener {
@@ -184,8 +194,10 @@ class Postadapter(val context: Context, val posts: List<Post>) :
             }
         }
 
-        }
     }
+}
+
+
 
 
 

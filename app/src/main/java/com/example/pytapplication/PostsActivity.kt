@@ -118,6 +118,8 @@ open class PostsActivity : AppCompatActivity() {
     }
 
 
+
+
     //Bottom navigation
     fun bottomNavigation (){
 

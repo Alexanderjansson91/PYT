@@ -24,7 +24,7 @@ class SortFragment : Fragment() {
     var post : Post? = null
     lateinit var  firestoreDB : FirebaseFirestore
     val options = arrayOf("Pop","Rock","trap","Hiphop","rap","house","Electronic" )
-
+    private lateinit var posts : MutableList<Post>
 
 
     override fun onCreateView(
