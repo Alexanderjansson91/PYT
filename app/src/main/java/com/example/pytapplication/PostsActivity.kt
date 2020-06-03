@@ -106,7 +106,6 @@ open class PostsActivity : AppCompatActivity() {
             intent.putExtra(EXTRA_USERNAME,signedInUser?.username)
             startActivity(intent)
         }
-
         return super.onOptionsItemSelected(item)
     }
 
