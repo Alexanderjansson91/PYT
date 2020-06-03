@@ -1,6 +1,7 @@
 package com.example.pytapplication
 
 import android.content.ClipData
+import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
@@ -36,20 +37,12 @@ open class PostsActivity : AppCompatActivity() {
     private var signedInUser: User? = null
     private lateinit var firestoreDB : FirebaseFirestore
     private lateinit var posts : MutableList<Post>
-    private lateinit var postSong : Post
     private lateinit var adapter: Postadapter
-    private var totalTime : Int =0
-    private lateinit var mp2 : MediaPlayer
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_posts)
         bottomNavigation()
-
-
-
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPosts)
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
@@ -117,9 +110,6 @@ open class PostsActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-
-
-
     //Bottom navigation
     fun bottomNavigation (){
 
@@ -148,6 +138,14 @@ open class PostsActivity : AppCompatActivity() {
         val transaktion = supportFragmentManager.beginTransaction()
         transaktion.add(R.id.fl_wrapper, sortFragment, "sortFragment")
         transaktion.commit()
+
+    }
+
+    //Updates the list after the user makes a selection in the fragment
+    fun updatedata (sortedPosts:MutableList<Post>){
+        posts.clear()
+        posts.addAll(sortedPosts)
+        adapter.notifyDataSetChanged()
     }
 }
 

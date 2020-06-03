@@ -49,7 +49,7 @@ class createUserActivity : AppCompatActivity() {
             registerUser()
         }
 
-        //Button to set cover to your post
+        //Button to add a cover to your profile
         val imageButton = findViewById(R.id.add_Profile_Image_Btn) as Button
         imageButton.setOnClickListener {
             Log.i(TAG, "Open up image picker on device")
@@ -63,14 +63,15 @@ class createUserActivity : AppCompatActivity() {
 
     //New user function
     private fun registerUser() {
+
         val emailTxt = findViewById(R.id.new_user_Email) as EditText
         val passwordTxt = findViewById(R.id.new_user_Password) as EditText
         val nameTxt = findViewById(R.id.new_user_Username) as EditText
-
         var email = emailTxt.text.toString()
         var password = passwordTxt.text.toString()
         var name = nameTxt.text.toString()
 
+        //upload Image To firebase storage
         imageButton?.isEnabled = false
         var photoDownloadUrl: String? = null
         val photoUploadUri = URI as Uri
@@ -86,11 +87,7 @@ class createUserActivity : AppCompatActivity() {
                         if (task.isSuccessful) {
                             val user = mAuth?.currentUser
                             val uid = user!!.uid
-                            //name = newUsername?.username.toString()
                             val username = User(name, photoDownloadUrl!!)
-
-                            //val nuser = mapOf((newUsername?.username) to name)
-                            //firestoreDB = FirebaseFirestore.getInstance()
                             firestoreDB.collection("users").document(uid).set(username)
                             startActivity(Intent(this, LoginActivity::class.java))
                             Toast.makeText(

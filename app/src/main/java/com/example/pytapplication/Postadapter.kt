@@ -3,6 +3,7 @@ package com.example.pytapplication
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.ACTION_VIEW
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.net.Uri
@@ -21,23 +22,18 @@ import com.example.pytapplication.models.Post
 import com.example.pytapplication.models.User
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.squareup.picasso.Picasso
 
 
-lateinit var activity: Activity
+
 var selectedPosition: Int = -1
 private const val TAG = "MyMessage"
-//val postActivity = PostsActivity()
-private var postActivity: PostsActivity? = null
-
-private var totalTime: Int = 0
-private var post: Post? = null
-
 private lateinit var storageRef: StorageReference
-private var user: User? = null
+
 
 class Postadapter(val context: Context, val posts: List<Post>) :
     RecyclerView.Adapter<Postadapter.ViewHolder>() {
-    var postPosistion = 0
+
 
     var mp = MediaPlayer()
 
@@ -46,7 +42,6 @@ class Postadapter(val context: Context, val posts: List<Post>) :
         storageRef = FirebaseStorage.getInstance().reference
 
         return ViewHolder(view)
-
     }
 
     //Size of recyclerView
@@ -57,7 +52,6 @@ class Postadapter(val context: Context, val posts: List<Post>) :
         holder.bind(posts[position])
         holder.postPosistion = position
 
-
         if (selectedPosition == position) {
             holder.itemView.setBackgroundColor(Color.parseColor("#52027171"))
             holder.btn?.visibility = View.VISIBLE
@@ -66,20 +60,18 @@ class Postadapter(val context: Context, val posts: List<Post>) :
             holder.btn?.visibility = View.GONE
         }
 
+        //Clicklistner on selected position
         holder.itemView.setOnClickListener {
             selectedPosition = position
             notifyDataSetChanged()
             Toast.makeText(context, "You play # ${position + 1}", Toast.LENGTH_SHORT).show()
             playmusic(selectedPosition)
-
-    }
+        }
     }
     //Play and and pause music and set Audiosource
     fun playmusic(position: Int) {
 
         val post = posts[position]
-
-
             if (mp.isPlaying()) {
                 if (mp != null) {
                     mp.pause()
@@ -119,7 +111,6 @@ class Postadapter(val context: Context, val posts: List<Post>) :
             val expandableLayout = itemView.findViewById<View>(R.id.expandableLayout)
             val cardView = itemView.findViewById<CardView>(R.id.cardview_post)
 
-
             viewSongbtn?.setOnClickListener {
                 if (expandableLayout.visibility == View.GONE) {
                     TransitionManager.beginDelayedTransition(cardView, AutoTransition())
@@ -132,7 +123,6 @@ class Postadapter(val context: Context, val posts: List<Post>) :
                 }
             }
         }
-
 
         //function how bind a post
         fun bind(post: Post) {
@@ -148,54 +138,75 @@ class Postadapter(val context: Context, val posts: List<Post>) :
             spotifyLinkBtn?.setOnClickListener {
                 var url: String?
                 url = post?.spotify.toString()
-                val i = Intent(Intent.ACTION_VIEW)
+                val i = Intent(ACTION_VIEW)
                 i.data = Uri.parse(url)
-                startActivity(context, i, null)
-                println(url)
+                if(url!!.isEmpty()){
+                    Toast.makeText(context, "No Url", Toast.LENGTH_SHORT).show()
+                }else {
+                    startActivity(context, i, null)
+                    println(url)
+                }
             }
+
             //Facebook button
             facebookLinkBtn?.setOnClickListener {
                 var url: String?
                 url = post?.facebook.toString()
-                val i = Intent(Intent.ACTION_VIEW)
+                val i = Intent(ACTION_VIEW)
                 i.data = Uri.parse(url)
-                startActivity(context, i, null)
-                println(url)
+                if(url!!.isEmpty()){
+                    Toast.makeText(context, "No Url", Toast.LENGTH_SHORT).show()
+                }else {
+                    startActivity(context, i, null)
+                    println(url)
+                }
             }
+
             //Instagram Button
             instagramLinkBtn?.setOnClickListener {
                 var url: String?
                 url = post?.instagram.toString()
-                val i = Intent(Intent.ACTION_VIEW)
+                val i = Intent(ACTION_VIEW)
                 i.data = Uri.parse(url)
-                startActivity(context, i, null)
-                println(url)
+                if(url!!.isEmpty()){
+                    Toast.makeText(context, "No Url", Toast.LENGTH_SHORT).show()
+                }else {
+                    startActivity(context, i, null)
+                    println(url)
+                }
             }
             //SoundCloud Button
             soundcloudLinkBtn?.setOnClickListener {
+
                 var url: String?
                 url = post?.soundcloud.toString()
-                val i = Intent(Intent.ACTION_VIEW)
+                val i = Intent(ACTION_VIEW)
                 i.data = Uri.parse(url)
-                startActivity(context, i, null)
-                println(url)
+                if(url!!.isEmpty()){
+                    Toast.makeText(context, "No Url", Toast.LENGTH_SHORT).show()
+                }else {
+                    startActivity(context, i, null)
+                    println(url)
+                }
             }
 
             //Share Button
             shareSongBtn.setOnClickListener {
                 val sendIntent = Intent()
+                val url = "https://soundcloud.com/discover"
                 sendIntent.action = Intent.ACTION_SEND
                 sendIntent.putExtra(
                     Intent.EXTRA_TEXT,
-                    "Hey Check out this Great app:"
+                    "Hey, check this awesome track ${post.trackname} made by ${post.artistname} : ${url}"
                 )
                 sendIntent.type = "text/plain"
                 startActivity(context, sendIntent, null)
             }
         }
-
     }
 }
+
+
 
 
 

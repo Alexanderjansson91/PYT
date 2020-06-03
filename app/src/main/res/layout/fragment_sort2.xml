@@ -3,11 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-
     android:layout_height="match_parent"
+
+
     tools:context=".fragments.SortFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
 
     <TextView
         android:id="@+id/genre_Sort_Textview"
@@ -16,28 +18,34 @@
         android:layout_gravity="bottom"
         android:background="#000000"
         android:gravity="bottom"
-        android:text="@string/hello_blank_fragment" />
+
+        />
+
 
     <Spinner
         android:id="@+id/sort_Spinner"
         style="@style/Widget.AppCompat.Spinner.DropDown"
-        android:layout_width="288dp"
-        android:layout_height="53dp"
+        android:layout_width="230dp"
+        android:layout_height="49dp"
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="100dp"
-        android:backgroundTint="#027171"
-        android:foregroundTint="#00F80365"
+        android:background="@drawable/background_spinner"
+        android:backgroundTintMode="add"
         android:popupTheme="@style/Widget.AppCompat.Spinner.DropDown"
-        android:textAlignment="center"
-        android:textColor="@color/menuprofile" />
+        android:textColor="#ffffff"
+         />
 
-    <ImageButton
-        android:id="@+id/close_Sort_Fragment"
+
+    <Button
+        android:id="@+id/Close_fragment"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="37dp"
         android:layout_gravity="bottom|right"
-        android:layout_marginBottom="140dp"
-        android:backgroundTint="#00FFFFFF"
-        android:src="@drawable/ic_indeterminate_check_box_black_24dp" />
+        android:layout_marginBottom="150dp"
+        android:background="@android:color/transparent"
+        android:backgroundTint="#000000"
+
+        android:textColor="#FFFFFF"
+        android:textColorHint="#00D0C7C7" />
 
 </FrameLayout>

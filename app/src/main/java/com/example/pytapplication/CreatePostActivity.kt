@@ -60,7 +60,7 @@ class CreatePostActivity : AppCompatActivity() {
                 Log.i(TAG, "Failure fetching signed User", exception)
             }
 
-        //Button to set audiofile to yout post
+        //Button to add audiofile to your post
         val soundbtn = findViewById<Button>(R.id.soundfile)
         soundbtn.setOnClickListener {
             Log.i(TAG, "Open up audio picker on device")
@@ -127,6 +127,8 @@ class CreatePostActivity : AppCompatActivity() {
                                 )
                                 firestoreDB.collection("posts").add(post)
                                 Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
+
+                                //Intent to ProfileActivity
                                 val ProfileIntent = Intent(this, ProfileActivity::class.java)
                                 //ProfileIntent.setAction(Intent.ACTION_SEND_MULTIPLE)
                                 ProfileIntent.putExtra(EXTRA_USERNAME, signedInUser?.username)
@@ -172,6 +174,7 @@ class CreatePostActivity : AppCompatActivity() {
         }
     }
 
+    //Go back to next page
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true

@@ -21,7 +21,6 @@ class ProfileActivity : PostsActivity() {
         return true
     }
 
-
     //Logout User
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_logout){

@@ -13,8 +13,6 @@ import com.google.firebase.auth.FirebaseAuth
 
 class ForgotPasswordActivity : AppCompatActivity() {
 
-    lateinit var auth: FirebaseAuth
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
@@ -29,7 +27,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
     }
 
-    //Function how reset password and send and reset link you valid user.
+    //Function how reset password and send and reset link to valid user.
     fun forgotPassword(username: EditText?) {
 
         val auth = FirebaseAuth.getInstance()
