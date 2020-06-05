@@ -21,7 +21,6 @@ import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_create_post.*
 
 private const val TAG = "CreatePostActivity"
-private const val PICK_PHOTO_CODE = 1337
 private const val PICK_AUDIO_CODE = 1336
 private var URI: Uri? = null
 private var signedInUser: User? = null
@@ -31,8 +30,8 @@ private const val EXTRA_USERNAME = "EXTRA_USERNAME"
 
 class CreatePostActivity : AppCompatActivity() {
 
-    lateinit var option : Spinner
-    lateinit var genreResult : TextView
+    lateinit var option: Spinner
+    lateinit var genreResult: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +43,7 @@ class CreatePostActivity : AppCompatActivity() {
         actionbar.setDisplayHomeAsUpEnabled(true)
         actionbar.setDisplayHomeAsUpEnabled(true)
 
-        spinner ()
+        spinner()
         storageRef = FirebaseStorage.getInstance().reference
         firestoreDB = FirebaseFirestore.getInstance()
 
@@ -66,7 +65,7 @@ class CreatePostActivity : AppCompatActivity() {
             Log.i(TAG, "Open up audio picker on device")
             var soundPickerIntent = Intent(Intent.ACTION_GET_CONTENT)
             soundPickerIntent.type = "audio/*"
-            if (soundPickerIntent.resolveActivity(packageManager) != null){
+            if (soundPickerIntent.resolveActivity(packageManager) != null) {
                 startActivityForResult(soundPickerIntent, PICK_AUDIO_CODE)
             }
         }
@@ -74,7 +73,7 @@ class CreatePostActivity : AppCompatActivity() {
         //button how upload the post and receive handleSubmitButtonClick ()
         val uploadPost = findViewById<Button>(R.id.uploadPostBtn)
         uploadPost.setOnClickListener {
-            handleSubmitButtonClick ()
+            handleSubmitButtonClick()
         }
     }
 
@@ -104,77 +103,81 @@ class CreatePostActivity : AppCompatActivity() {
         //upload audio To firebase storage
         uploadPostBtn.isEnabled = false
         var audioDownloadUrl: String? = null
-                    uploadPostBtn.isEnabled = true
-                    val audioUploadUri = URI as Uri
-                    val Audioreference = storageRef.child("audios/${System.currentTimeMillis()}-audio.wav")
-                    Audioreference.putFile(audioUploadUri)
-                        .addOnCompleteListener {
-                            Audioreference.downloadUrl.addOnSuccessListener {
-                                audioDownloadUrl = it.toString()
+        uploadPostBtn.isEnabled = true
+        val audioUploadUri = URI as Uri
+        val Audioreference = storageRef.child("audios/${System.currentTimeMillis()}-audio.wav")
+        Audioreference.putFile(audioUploadUri)
+            .addOnCompleteListener {
+                Audioreference.downloadUrl.addOnSuccessListener {
+                    audioDownloadUrl = it.toString()
 
-                                //Creating a new post object by input value
-                                val post = Post(
-                                    textViewNameArtist.text.toString(),
-                                    textViewNameTrack.text.toString(),
-                                    System.currentTimeMillis(),
-                                    signedInUser,
-                                    audioDownloadUrl!!,
-                                    genreResult.text.toString(),
-                                    spotify.text.toString(),
-                                    instagram.text.toString(),
-                                    facebook.text.toString(),
-                                    soundcloud.text.toString()
-                                )
-                                firestoreDB.collection("posts").add(post)
-                                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
+                    //Creating a new post object by input value
+                    val post = Post(
+                        textViewNameArtist.text.toString(),
+                        textViewNameTrack.text.toString(),
+                        System.currentTimeMillis(),
+                        signedInUser,
+                        audioDownloadUrl!!,
+                        genreResult.text.toString(),
+                        spotify.text.toString(),
+                        instagram.text.toString(),
+                        facebook.text.toString(),
+                        soundcloud.text.toString()
+                    )
+                    firestoreDB.collection("posts").add(post)
+                    Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
 
-                                //Intent to ProfileActivity
-                                val ProfileIntent = Intent(this, ProfileActivity::class.java)
-                                //ProfileIntent.setAction(Intent.ACTION_SEND_MULTIPLE)
-                                ProfileIntent.putExtra(EXTRA_USERNAME, signedInUser?.username)
-                                startActivity(ProfileIntent)
-                                finish()
-                            }
-                        }
-                    }
+                    //Intent to ProfileActivity
+                    val ProfileIntent = Intent(this, ProfileActivity::class.java)
+                    ProfileIntent.putExtra(EXTRA_USERNAME, signedInUser?.username)
+                    startActivity(ProfileIntent)
+                    finish()
+                }
+            }
+    }
 
 
     //Notify when user have selected a Audio file
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val uriSong = findViewById<TextView>(R.id.uriSong)
-        if (resultCode == Activity.RESULT_OK){
-         if (requestCode == PICK_AUDIO_CODE){
-            URI = data?.data
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == PICK_AUDIO_CODE) {
+                URI = data?.data
                 //uriSong.text = URI.toString()
                 uriSong.text = "AUDIO ✔"
                 Log.i(TAG, "VideoUri $URI")
-             }
-            else {
-                Toast.makeText(this,"file picker action cancelled", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "file picker action cancelled", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     //Spinner to pick Genre
-    fun spinner (){
+    fun spinner() {
         option = findViewById(R.id.genreSpinner)
         genreResult = findViewById(R.id.spinnerResult)
-        val options = arrayOf("Pop","Rock","trap","Hiphop","rap","house","Electronic")
-        option.adapter = ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, options)
+        val options = arrayOf("Pop", "Rock", "trap", "Hiphop", "rap", "house", "Electronic")
+        option.adapter =
+            ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, options)
 
-        option.onItemSelectedListener = object  :AdapterView.OnItemSelectedListener{
+        option.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 genreResult.text = "Please selec an genre"
             }
 
-            override fun onItemSelected( parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 genreResult.text = options.get(position)
             }
         }
     }
 
-    //Go back to next page
+    //Go back to Previuos page
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true

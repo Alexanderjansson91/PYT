@@ -1,6 +1,5 @@
-package com.example.pytapplication
+package com.example.pytapplication.Adapter
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
@@ -18,12 +17,10 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.pytapplication.R
 import com.example.pytapplication.models.Post
-import com.example.pytapplication.models.User
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.squareup.picasso.Picasso
-
 
 
 var selectedPosition: Int = -1
@@ -33,7 +30,6 @@ private lateinit var storageRef: StorageReference
 
 class Postadapter(val context: Context, val posts: List<Post>) :
     RecyclerView.Adapter<Postadapter.ViewHolder>() {
-
 
     var mp = MediaPlayer()
 
@@ -60,7 +56,7 @@ class Postadapter(val context: Context, val posts: List<Post>) :
             holder.btn?.visibility = View.GONE
         }
 
-        //Clicklistner on selected position
+        //Clicklistner on selected position, how also play and pause music
         holder.itemView.setOnClickListener {
             selectedPosition = position
             notifyDataSetChanged()
@@ -68,24 +64,25 @@ class Postadapter(val context: Context, val posts: List<Post>) :
             playmusic(selectedPosition)
         }
     }
+
     //Play and and pause music and set Audiosource
     fun playmusic(position: Int) {
 
         val post = posts[position]
-            if (mp.isPlaying()) {
-                if (mp != null) {
-                    mp.pause()
+        if (mp.isPlaying()) {
+            if (mp != null) {
+                mp.pause()
 
-                }
-            } else {
-                if (mp != null) {
-                    mp.release()
-                    mp = MediaPlayer()
-                    mp.setDataSource(post.audioUrl)
-                    mp.prepare()
-                    mp.start()
-                }
             }
+        } else {
+            if (mp != null) {
+                mp.release()
+                mp = MediaPlayer()
+                mp.setDataSource(post.audioUrl)
+                mp.prepare()
+                mp.start()
+            }
+        }
     }
 
     //inner class for my viewhodler
@@ -140,9 +137,9 @@ class Postadapter(val context: Context, val posts: List<Post>) :
                 url = post?.spotify.toString()
                 val i = Intent(ACTION_VIEW)
                 i.data = Uri.parse(url)
-                if(url!!.isEmpty()){
+                if (url!!.isEmpty()) {
                     Toast.makeText(context, "No Url", Toast.LENGTH_SHORT).show()
-                }else {
+                } else {
                     startActivity(context, i, null)
                     println(url)
                 }
@@ -154,9 +151,9 @@ class Postadapter(val context: Context, val posts: List<Post>) :
                 url = post?.facebook.toString()
                 val i = Intent(ACTION_VIEW)
                 i.data = Uri.parse(url)
-                if(url!!.isEmpty()){
+                if (url!!.isEmpty()) {
                     Toast.makeText(context, "No Url", Toast.LENGTH_SHORT).show()
-                }else {
+                } else {
                     startActivity(context, i, null)
                     println(url)
                 }
@@ -168,9 +165,9 @@ class Postadapter(val context: Context, val posts: List<Post>) :
                 url = post?.instagram.toString()
                 val i = Intent(ACTION_VIEW)
                 i.data = Uri.parse(url)
-                if(url!!.isEmpty()){
+                if (url!!.isEmpty()) {
                     Toast.makeText(context, "No Url", Toast.LENGTH_SHORT).show()
-                }else {
+                } else {
                     startActivity(context, i, null)
                     println(url)
                 }
@@ -182,9 +179,9 @@ class Postadapter(val context: Context, val posts: List<Post>) :
                 url = post?.soundcloud.toString()
                 val i = Intent(ACTION_VIEW)
                 i.data = Uri.parse(url)
-                if(url!!.isEmpty()){
+                if (url!!.isEmpty()) {
                     Toast.makeText(context, "No Url", Toast.LENGTH_SHORT).show()
-                }else {
+                } else {
                     startActivity(context, i, null)
                     println(url)
                 }

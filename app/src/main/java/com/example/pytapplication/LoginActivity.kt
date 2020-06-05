@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.activity_posts.*
 class LoginActivity : AppCompatActivity() {
 
     val TAG = "MyMessage"
-    lateinit var auth : FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
         //Clicklistner on my "new User Button" button
         val newUserButton = findViewById<Button>(R.id.new_Profil)
         newUserButton.setOnClickListener {
-           goToRegisterPage()
+            goToRegisterPage()
         }
 
         //Log in Button, return Toast if email/password are empty
@@ -43,54 +42,47 @@ class LoginActivity : AppCompatActivity() {
             btnLogin.isEnabled = false
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()
-            if(email.isBlank() || password.isBlank()){
+            if (email.isBlank() || password.isBlank()) {
                 Toast.makeText(this, "email/password cannot be empty", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             //Firebase authentication check
-            auth.signInWithEmailAndPassword(email,password).addOnCompleteListener { task ->
+            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 btnLogin.isEnabled = true
-                if (task.isSuccessful){
-                    Toast.makeText(this,"success", Toast.LENGTH_SHORT).show()
+                if (task.isSuccessful) {
+                    Toast.makeText(this, "success", Toast.LENGTH_SHORT).show()
                     getPostActivity()
-                }else {
-                   Log.i(TAG, "goToPostActivity", task.exception)
-                    Toast.makeText(this,"authentication Failed", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.i(TAG, "goToPostActivity", task.exception)
+                    Toast.makeText(this, "authentication Failed", Toast.LENGTH_SHORT).show()
                 }
             }
         }
         //Clicklistner on my "forgot password" button
         val forgotPassword = findViewById<Button>(R.id.forgot_Password_button)
         forgotPassword.setOnClickListener {
-            goToforgotPasswordPage ()
+            goToforgotPasswordPage()
         }
     }
 
     //go to forgot password page
-    fun goToforgotPasswordPage (){
+    fun goToforgotPasswordPage() {
         val intent = Intent(this, ForgotPasswordActivity::class.java)
         startActivity(intent)
     }
 
     //go to register page
-    fun goToRegisterPage (){
+    fun goToRegisterPage() {
         val intent = Intent(this, createUserActivity::class.java)
         startActivity(intent)
     }
 
-
     //intent to PostsActivity
     private fun getPostActivity() {
-       Log.i(TAG, "goToPostActivity")
+        Log.i(TAG, "goToPostActivity")
         val intent = Intent(this, PostsActivity::class.java)
         startActivity(intent)
         finish()
-    }
-
-    //Menu
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_login, menu)
-        return super.onCreateOptionsMenu(menu)
     }
 }

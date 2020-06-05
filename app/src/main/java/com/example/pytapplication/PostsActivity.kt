@@ -1,42 +1,31 @@
 package com.example.pytapplication
 
-import android.content.ClipData
-import android.content.Context
 import android.content.Intent
-import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.transition.AutoTransition
-import android.transition.TransitionManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.*
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pytapplication.Adapter.Postadapter
 import com.example.pytapplication.fragments.SortFragment
 import com.example.pytapplication.models.Post
 import com.example.pytapplication.models.User
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.core.OrderBy
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_posts.*
-import kotlinx.android.synthetic.main.item_post.*
-import java.util.*
 
 private const val TAG = "message"
 private const val EXTRA_USERNAME = "EXTRA_USERNAME"
+
 open class PostsActivity : AppCompatActivity() {
 
     private var signedInUser: User? = null
-    private lateinit var firestoreDB : FirebaseFirestore
-    private lateinit var posts : MutableList<Post>
+    private lateinit var firestoreDB: FirebaseFirestore
+    private lateinit var posts: MutableList<Post>
     private lateinit var adapter: Postadapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,14 +39,14 @@ open class PostsActivity : AppCompatActivity() {
         posts = mutableListOf()
         adapter = Postadapter(this, posts)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager =  LinearLayoutManager(this)
+        recyclerView.layoutManager = LinearLayoutManager(this)
         firestoreDB = FirebaseFirestore.getInstance()
 
         //Get Current User
         firestoreDB.collection("users")
             .document(FirebaseAuth.getInstance().currentUser?.uid as String)
             .get()
-            .addOnSuccessListener {usersnaphot ->
+            .addOnSuccessListener { usersnaphot ->
                 signedInUser = usersnaphot.toObject(User::class.java)
                 Log.i(TAG, "Signed in  user $signedInUser")
             }
@@ -72,7 +61,7 @@ open class PostsActivity : AppCompatActivity() {
 
         //Set username to the actionbar
         val username = (intent.getStringExtra(EXTRA_USERNAME))
-        if(username != null){
+        if (username != null) {
             postsReference = postsReference.whereEqualTo("user.username", username)
             supportActionBar?.title = username
         }
@@ -80,14 +69,14 @@ open class PostsActivity : AppCompatActivity() {
         //query for all my post
         postsReference.addSnapshotListener { snapshot, exception ->
             if (exception != null || snapshot == null) {
-                Log.e(TAG,"Exception when querying posts", exception)
+                Log.e(TAG, "Exception when querying posts", exception)
                 return@addSnapshotListener
             }
             val postList = snapshot.toObjects(Post::class.java)
             posts.clear()
             posts.addAll(postList)
             adapter.notifyDataSetChanged()
-            for (post in postList){
+            for (post in postList) {
                 Log.i(TAG, "Post ${post}")
             }
         }
@@ -101,16 +90,16 @@ open class PostsActivity : AppCompatActivity() {
 
     //Intent to profileActivity
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.menu_profile){
+        if (item.itemId == R.id.menu_profile) {
             val intent = Intent(this, ProfileActivity::class.java)
-            intent.putExtra(EXTRA_USERNAME,signedInUser?.username)
+            intent.putExtra(EXTRA_USERNAME, signedInUser?.username)
             startActivity(intent)
         }
         return super.onOptionsItemSelected(item)
     }
 
     //Bottom navigation
-    fun bottomNavigation (){
+    fun bottomNavigation() {
 
         bottomnavigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -141,7 +130,7 @@ open class PostsActivity : AppCompatActivity() {
     }
 
     //Updates the list after the user makes a selection in the fragment
-    fun updatedata (sortedPosts:MutableList<Post>){
+    fun updatedata(sortedPosts: MutableList<Post>) {
         posts.clear()
         posts.addAll(sortedPosts)
         adapter.notifyDataSetChanged()

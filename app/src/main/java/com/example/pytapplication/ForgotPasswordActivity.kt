@@ -17,6 +17,11 @@ class ForgotPasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
 
+        val actionbar = supportActionBar
+        actionbar!!.title = "PYT"
+        actionbar.setDisplayHomeAsUpEnabled(true)
+        actionbar.setDisplayHomeAsUpEnabled(true)
+
         val forgotPasswordBtn = findViewById<Button>(R.id.reset_password_btn)
 
         //Clicklistner on my "Reset button"
@@ -27,7 +32,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
     }
 
-    //Function how reset password and send and reset link to valid user.
+    //Function how reset password and send and reset link to a valid user.
     fun forgotPassword(username: EditText?) {
 
         val auth = FirebaseAuth.getInstance()
@@ -47,7 +52,13 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
                 }
             }
-        }
     }
+
+    //Go back to Previuos page
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+}
 
 

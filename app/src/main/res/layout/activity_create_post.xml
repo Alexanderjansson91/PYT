@@ -51,15 +51,15 @@
 
     <Button
         android:id="@+id/uploadPostBtn"
-        android:layout_width="333dp"
-        android:layout_height="53dp"
+        android:layout_width="244dp"
+        android:layout_height="42dp"
         android:layout_marginBottom="32dp"
 
         android:background="@drawable/loginbtn_border"
         android:backgroundTint="#000000"
         android:text="Upload"
         android:textColor="#FFFFFF"
-        android:textSize="36sp"
+        android:textSize="14sp"
         android:textStyle="bold"
 
         app:layout_constraintBottom_toBottomOf="parent"

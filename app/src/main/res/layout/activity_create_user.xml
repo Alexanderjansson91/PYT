@@ -37,7 +37,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="35dp"
         android:text="Post Your Track"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -61,19 +61,22 @@
 
     <Button
         android:id="@+id/New_User_Button"
-        android:layout_width="360dp"
-        android:layout_height="63dp"
+        android:layout_width="244dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="32dp"
+        android:background="@drawable/loginbtn_border"
         android:backgroundTint="#000000"
         android:foregroundGravity="center"
         android:gravity="center_horizontal|center_vertical"
         android:text="Join us"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
         android:id="@+id/textView4"
@@ -106,7 +109,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="35dp"
         android:text="IMAGE"
         app:layout_constraintEnd_toStartOf="@+id/profile_image"
         app:layout_constraintStart_toStartOf="parent"
@@ -116,17 +119,17 @@
         android:id="@+id/profile_image"
         android:layout_width="67dp"
         android:layout_height="74dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="120dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/new_user_Username"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="340dp"
         android:layout_height="34dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="NOTE! Image will describe your music Visually!"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

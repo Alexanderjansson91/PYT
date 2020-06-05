@@ -20,24 +20,25 @@ import java.util.*
 
 private const val PICK_PHOTO_CODE = 1337
 private var URI: Uri? = null
-private lateinit var firestoreDB: FirebaseFirestore
 private lateinit var storageRef: StorageReference
-private const val EXTRA_USERNAME = "EXTRA_USERNAME"
 private const val TAG = "CreateUserActivity"
 
 class createUserActivity : AppCompatActivity() {
 
 
     private lateinit var firestoreDB: FirebaseFirestore
-    private var newUsername: User? = null
     private var mAuth: FirebaseAuth? = null
     var imageButton: Button? = null
-    //lateinit var auth : FirebaseAuth
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_user)
+
+        val actionbar = supportActionBar
+        actionbar!!.title = "PYT"
+
+        actionbar.setDisplayHomeAsUpEnabled(true)
+        actionbar.setDisplayHomeAsUpEnabled(true)
 
         firestoreDB = FirebaseFirestore.getInstance()
         storageRef = FirebaseStorage.getInstance().reference
@@ -122,5 +123,11 @@ class createUserActivity : AppCompatActivity() {
                 Log.i(TAG, "photoUri $URI")
             }
         }
+    }
+
+    //Go back to Previuos page
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }
